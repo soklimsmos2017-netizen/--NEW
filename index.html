@@ -59,7 +59,7 @@
     .chip { padding: 5px 12px; border-radius: 14px; background: #202026; color: #d4d4d8; font-size: 12px; white-space: nowrap; cursor: pointer; }
     .chip.active { background: #fff; color: #000; font-weight: bold; }
 
-    /* Main Container (Home View) */
+    /* Home View */
     #homeView { flex: 1; padding: 16px; max-width: 1300px; margin: 0 auto; width: 100%; }
     .grid-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
     .grid-title { font-size: 15px; font-weight: bold; }
@@ -88,9 +88,7 @@
     .card-title { font-size: 13px; font-weight: bold; color: #fff; line-height: 1.3; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     .card-meta { font-size: 11px; color: #a1a1aa; margin-top: auto; }
 
-    /* ==================================================== */
-    /* DEDICATED FULL MOVIE PAGE VIEW (ផ្ទាំងចាក់រឿងដាច់ដោយឡែក) */
-    /* ==================================================== */
+    /* Dedicated Watch View */
     #watchView {
       display: none;
       flex: 1;
@@ -121,27 +119,41 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      box-shadow: 0 2px 8px rgba(229,9,20,0.4);
     }
     .watch-container {
       width: 100%;
-      max-width: 1000px;
+      max-width: 900px;
       margin: 0 auto;
-      padding-bottom: 40px;
+      padding-bottom: 50px;
     }
+    
+    /* Perfect Video Player Responsive Frame */
     .video-viewport {
+      position: relative;
       width: 100%;
-      aspect-ratio: 16/9;
+      padding-top: 56.25%; /* 16:9 Aspect Ratio */
       background: #000;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.8);
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+      overflow: hidden;
     }
     .video-viewport iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       border: none;
-      display: block;
     }
+    /* Block Pop-out button overlay */
+    .popout-blocker {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 60px;
+      height: 60px;
+      z-index: 10;
+      background: transparent;
+    }
+
     .watch-details-box {
       padding: 16px;
     }
@@ -154,20 +166,20 @@
       border-bottom: 1px solid rgba(255,255,255,0.08);
     }
     .watch-movie-title {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 700;
       color: #fff;
       line-height: 1.3;
     }
     .watch-movie-meta {
-      font-size: 12.5px;
+      font-size: 12px;
       color: #a1a1aa;
       margin-top: 4px;
     }
 
-    /* Playlist Episodes */
+    /* Episodes Playlist */
     .episodes-panel {
-      margin-top: 16px;
+      margin-top: 14px;
       padding: 14px;
       background: #141418;
       border-radius: 10px;
@@ -178,9 +190,6 @@
       font-weight: bold;
       color: #fbbf24;
       margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
     }
     .episodes-grid {
       display: flex;
@@ -191,11 +200,10 @@
       background: #202026;
       border: 1px solid #33333d;
       color: #f4f4f5;
-      padding: 8px 14px;
+      padding: 7px 14px;
       border-radius: 8px;
-      font-size: 12.5px;
+      font-size: 12px;
       cursor: pointer;
-      transition: all 0.2s;
     }
     .ep-badge.active, .ep-badge:hover {
       background: #E50914;
@@ -204,9 +212,9 @@
       color: #fff;
     }
 
-    /* Comments Section */
+    /* Comments & Nested Replies */
     .comments-panel {
-      margin-top: 20px;
+      margin-top: 18px;
       padding: 16px;
       background: #141418;
       border-radius: 10px;
@@ -216,7 +224,13 @@
       font-size: 14px;
       font-weight: bold;
       color: #fff;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
+    }
+    .replying-alert {
+      font-size: 11.5px;
+      color: #fbbf24;
+      margin-bottom: 6px;
+      display: none;
     }
     .comment-input-box {
       display: flex;
@@ -233,16 +247,20 @@
       font-size: 13px;
       outline: none;
     }
-    .comment-items-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
     .comment-card {
       background: #1a1a20;
       padding: 10px 12px;
       border-radius: 8px;
       border: 1px solid rgba(255,255,255,0.04);
+      margin-bottom: 8px;
+    }
+    .reply-card {
+      margin-left: 20px;
+      border-left: 2px solid #E50914;
+      background: #15151a;
+      margin-top: 6px;
+      padding: 8px 10px;
+      border-radius: 6px;
     }
     .comment-author-name {
       font-size: 12px;
@@ -255,11 +273,24 @@
       margin-top: 2px;
       line-height: 1.4;
     }
+    .comment-footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 6px;
+    }
     .comment-timestamp {
       font-size: 10.5px;
       color: #71717a;
-      margin-top: 4px;
     }
+    .btn-reply-link {
+      background: none;
+      border: none;
+      color: #a1a1aa;
+      font-size: 11.5px;
+      cursor: pointer;
+    }
+    .btn-reply-link:hover { color: #fff; }
 
     /* Modals */
     .modal-box { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 300; padding: 16px; align-items: center; justify-content: center; }
@@ -285,16 +316,14 @@
 </head>
 <body>
 
-  <!-- ==================== 1. HOME VIEW (ទំព័រដើម) ==================== -->
+  <!-- ==================== HOME PAGE ==================== -->
   <div id="homePageWrapper">
-    <!-- Marquee -->
     <div class="marquee-bar">
       <div class="marquee-text">
-        📢 សូមស្វាគមន៍មកកាន់ SOKLIM STREAM • រីករាយទស្សនាភាពយន្តកម្រិត HD ច្បាស់ត្រជាក់ភ្នែក • ចាក់វីដេអូលើផ្ទាំងថ្មីស្រឡះ!
+        📢 សូមស្វាគមន៍មកកាន់ SOKLIM STREAM • រីករាយទស្សនាភាពយន្តកម្រិត HD ច្បាស់ត្រជាក់ភ្នែក!
       </div>
     </div>
 
-    <!-- Header -->
     <header>
       <div class="brand" onclick="location.reload()">SOKLIM</div>
       <div class="search-box">
@@ -307,7 +336,6 @@
       </div>
     </header>
 
-    <!-- Category Chips -->
     <div class="chips-bar">
       <div class="chip active" onclick="filterByChip('ទាំងអស់', this)">ទាំងអស់</div>
       <div class="chip" onclick="filterByChip('ខ្មែរ', this)">ខ្មែរ</div>
@@ -320,7 +348,6 @@
       <div class="chip" onclick="filterByChip('កំប្លែង', this)">កំប្លែង</div>
     </div>
 
-    <!-- Movies Grid -->
     <main id="homeView">
       <div class="grid-header">
         <div class="grid-title" id="pageTitle">ភាពយន្តទាំងអស់</div>
@@ -332,24 +359,25 @@
     </main>
   </div>
 
-  <!-- ==================== 2. WATCH VIEW (ផ្ទាំងទំព័រចាក់រឿងថ្មីដាច់ដោយឡែក) ==================== -->
+  <!-- ==================== DEDICATED WATCH PAGE ==================== -->
   <div id="watchView">
-    <!-- Watch Top Nav Bar -->
     <div class="watch-nav-bar">
       <button class="btn-back" onclick="exitToHome()">
         <span>❮</span> ចាកចេញ (ថយក្រោយ)
       </button>
       <div style="display: flex; gap: 8px;">
-        <button id="inPlayerEditBtn" class="btn btn-gold" style="display: none;" onclick="editCurrentMovie()">✏️ កែប្រែរឿងនេះ</button>
+        <button id="inPlayerEditBtn" class="btn btn-gold" style="display: none;" onclick="editCurrentMovie()">✏️ កែប្រែ</button>
+        <button id="inPlayerDeleteBtn" class="btn btn-red" style="display: none;" onclick="deleteCurrentMovie()">🗑️ លុបរឿងនេះ</button>
       </div>
     </div>
 
-    <!-- Watch Video & Info Container -->
     <div class="watch-container">
-      <!-- Full Video Player -->
-      <div class="video-viewport" id="playerFrame"></div>
+      <div class="video-viewport">
+        <!-- ស្រទាប់រារាំងមិនឱ្យចុច Pop-out ទៅផ្ទាំង Drive ខាងក្រៅ -->
+        <div class="popout-blocker"></div>
+        <div id="playerFrame" style="width:100%; height:100%;"></div>
+      </div>
 
-      <!-- Details Box -->
       <div class="watch-details-box">
         <div class="watch-title-row">
           <div>
@@ -358,19 +386,21 @@
           </div>
         </div>
 
-        <!-- Episodes Playlist -->
         <div id="episodesArea" class="episodes-panel" style="display: none;">
           <div class="episodes-panel-title">📺 បញ្ជី Playlist ភាគវីដេអូ៖</div>
           <div class="episodes-grid" id="episodesList"></div>
         </div>
 
-        <!-- Comments -->
         <div class="comments-panel">
           <div class="comments-header">
             💬 មតិយោបល់ (<span id="commentCount">0</span>)
           </div>
+          <div id="replyAlert" class="replying-alert">
+            កំពុងឆ្លើយតបទៅកាន់: <strong id="replyToUser"></strong>
+            <button onclick="cancelReply()" style="background:none; border:none; color:#ef4444; margin-left:6px; cursor:pointer;">✕ បោះបង់</button>
+          </div>
           <div class="comment-input-box">
-            <input type="text" id="commentInput" class="comment-field" placeholder="សរសេរមតិយោបល់របស់អ្នកអំពីភាពយន្តនេះ..." onkeydown="if(event.key==='Enter') submitComment()">
+            <input type="text" id="commentInput" class="comment-field" placeholder="សរសេរមតិយោបល់របស់អ្នក..." onkeydown="if(event.key==='Enter') submitComment()">
             <button class="btn btn-red" onclick="submitComment()">ផ្ញើ</button>
           </div>
           <div class="comment-items-list" id="commentList"></div>
@@ -379,7 +409,7 @@
     </div>
   </div>
 
-  <!-- Login Modal -->
+  <!-- Auth Modal -->
   <div class="modal-box" id="authModal">
     <div class="form-wrapper" style="max-width: 360px;">
       <div class="auth-tabs">
@@ -487,6 +517,7 @@
     var currentAuthMode = 'login';
     var loggedInUser = null;
     var activeMovie = null;
+    var replyingParentId = null;
 
     try {
       loggedInUser = JSON.parse(localStorage.getItem('STREAM_USER'));
@@ -565,7 +596,7 @@
           localStorage.setItem('STREAM_USER', JSON.stringify(loggedInUser));
           refreshAuthUI();
           closeAuthModal();
-          alert('ស្វាគមន៍ SOKLIM! លោកអ្នកអាចបន្ថែម និងកែប្រែរឿងបាន។');
+          alert('ស្វាគមន៍ SOKLIM! លោកអ្នកអាចបន្ថែម កែប្រែ និងលុបរឿងបាន។');
         } else {
           var registered = JSON.parse(localStorage.getItem('SAVED_USERS') || '{}');
           if (registered[u] && registered[u] === p) {
@@ -646,6 +677,7 @@
       }
     }
 
+    // Add / Update Movie (Google Sheet)
     function submitMovieForm() {
       var editId = document.getElementById('editMovieId').value.trim();
       var title = document.getElementById('mTitle').value.trim();
@@ -681,6 +713,7 @@
       saveBtn.disabled = true;
 
       var payload = {
+        action: 'save_movie',
         id: editId ? editId : ('id_' + Date.now()),
         title: title,
         country: country,
@@ -707,6 +740,41 @@
         alert('❌ មានបញ្ហាក្នុងការបញ្ជូនទិន្នន័យ');
         saveBtn.innerText = 'រក្សាទុកចូល Sheet';
         saveBtn.disabled = false;
+      });
+    }
+
+    // Delete Movie Directly from Google Sheet
+    function deleteCurrentMovie() {
+      if (!activeMovie) return;
+      if (!confirm('តើអ្នកពិតជាចង់លុបរឿង "' + activeMovie.title + '" ចេញពី Google Sheet មែនទេ?')) return;
+
+      var delBtn = document.getElementById('inPlayerDeleteBtn');
+      delBtn.innerText = '⏳ កំពុងលុប...';
+      delBtn.disabled = true;
+
+      var payload = {
+        action: 'delete_movie',
+        id: activeMovie.id
+      };
+
+      fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+      .then(function() {
+        alert('✅ បានលុបរឿងចេញពី Google Sheet រួចរាល់!');
+        delBtn.innerText = '🗑️ លុបរឿងនេះ';
+        delBtn.disabled = false;
+        exitToHome();
+        setTimeout(loadMoviesFromSheet, 1500);
+      })
+      .catch(function(err) {
+        console.error(err);
+        alert('❌ មានបញ្ហាក្នុងការលុប');
+        delBtn.innerText = '🗑️ លុបរឿងនេះ';
+        delBtn.disabled = false;
       });
     }
 
@@ -810,37 +878,37 @@
       if (!url) return '';
       var fileId = extractDriveId(url);
       if (fileId) {
-        return 'https://drive.google.com/file/d/' + fileId + '/preview';
+        // បន្ថែម autoplay=1 ដើម្បីឱ្យវាចាក់ដោយស្វ័យប្រវត្តិ
+        return 'https://drive.google.com/file/d/' + fileId + '/preview?autoplay=1';
       }
       return url;
     }
 
-    // =========================================================
-    // បើកទំព័រចាក់វីដេអូថ្មី (FULL DEDICATED PAGE VIEW)
-    // =========================================================
+    // Open Dedicated Watch Page
     function openDedicatedMoviePage(index) {
       var movie = allMovies[index];
       if (!movie) return;
       activeMovie = movie;
 
-      // 1. លាក់ផ្ទាំង Home ចោល ហើយបើកផ្ទាំង Watch
       document.getElementById('homePageWrapper').style.display = 'none';
       document.getElementById('watchView').style.display = 'flex';
       window.scrollTo(0, 0);
 
-      // 2. ដាក់ព័ត៌មានរឿង
       document.getElementById('currentMovieTitle').innerText = movie.title;
-      document.getElementById('currentMovieMeta').innerText = (movie.country || 'ខ្មែរ') + ' • ' + (movie.genre || 'ទូទៅ') + ' • កម្រិតច្បាស់ HD 1080p';
+      document.getElementById('currentMovieMeta').innerText = (movie.country || 'ខ្មែរ') + ' • ' + (movie.genre || 'ទូទៅ') + ' • កម្រិតច្បាស់ HD';
 
-      // 3. ពិនិត្យប៊ូតុង Edit សម្រាប់ Owner
+      // Owner Actions
       var inPlayerEditBtn = document.getElementById('inPlayerEditBtn');
+      var inPlayerDeleteBtn = document.getElementById('inPlayerDeleteBtn');
       if (loggedInUser && loggedInUser.role === 'owner') {
         inPlayerEditBtn.style.display = 'inline-block';
+        inPlayerDeleteBtn.style.display = 'inline-block';
       } else {
         inPlayerEditBtn.style.display = 'none';
+        inPlayerDeleteBtn.style.display = 'none';
       }
 
-      // 4. ដោះស្រាយ Playlist ឬ Single Video
+      // Episodes Playlist
       var epArea = document.getElementById('episodesArea');
       var epList = document.getElementById('episodesList');
       var rawUrl = movie.url.trim();
@@ -867,18 +935,18 @@
         loadVideoFrame(rawUrl);
       }
 
-      // 5. បង្ហាញខមិន
-      loadMovieComments(movie.id || movie.title);
+      loadMovieComments(movie.id);
     }
 
-    // ចុចប៊ូតុង «ចាកចេញ (ថយក្រោយ)» ត្រឡប់ទៅ Home វិញ
     function exitToHome() {
-      document.getElementById('playerFrame').innerHTML = ''; // បញ្ឈប់វីដេអូ
+      document.getElementById('playerFrame').innerHTML = '';
       document.getElementById('watchView').style.display = 'none';
       document.getElementById('homePageWrapper').style.display = 'block';
       activeMovie = null;
+      cancelReply();
     }
 
+    // Switch episode & Autoplay
     function switchEpisode(epIndex, btn) {
       try {
         var eps = JSON.parse(activeMovie.url);
@@ -929,27 +997,70 @@
       document.getElementById('formModal').classList.add('active');
     }
 
-    // Comments System
+    // Persistent Sheet-backed Comments & Replies System
     function loadMovieComments(movieId) {
-      var storeKey = 'COMMENTS_' + movieId;
-      var comments = JSON.parse(localStorage.getItem(storeKey) || '[]');
-      document.getElementById('commentCount').innerText = comments.length;
-
       var list = document.getElementById('commentList');
-      if (comments.length === 0) {
-        list.innerHTML = '<div style="font-size:12px; color:#71717a; text-align:center; padding:12px;">មិនទាន់មានមតិយោបល់នៅឡើយទេ។ សូមក្លាយជាអ្នកដំបូងដែលបញ្ចេញមតិ!</div>';
-        return;
-      }
+      list.innerHTML = '<div style="font-size:12px; color:#a1a1aa; text-align:center; padding:10px;">កំពុងទាញមតិយោបល់...</div>';
 
-      list.innerHTML = comments.map(function(c) {
-        return `
-          <div class="comment-card">
-            <div class="comment-author-name">👤 ${c.user}</div>
-            <div class="comment-text-body">${c.text}</div>
-            <div class="comment-timestamp">${c.time}</div>
-          </div>
-        `;
-      }).join('');
+      fetch(SCRIPT_URL + '?action=get_comments&t=' + Date.now())
+        .then(function(res) { return res.json(); })
+        .then(function(allComments) {
+          var filtered = allComments.filter(function(c) { return String(c.movieId) === String(movieId); });
+          document.getElementById('commentCount').innerText = filtered.length;
+
+          if (filtered.length === 0) {
+            list.innerHTML = '<div style="font-size:12px; color:#71717a; text-align:center; padding:12px;">មិនទាន់មានមតិយោបល់នៅឡើយទេ។ សូមក្លាយជាអ្នកដំបូងដែលបញ្ចេញមតិ!</div>';
+            return;
+          }
+
+          // បែងចែករវាង Comment មេ និង Reply
+          var mainComments = filtered.filter(function(c) { return !c.parentId; });
+          var replies = filtered.filter(function(c) { return !!c.parentId; });
+
+          var html = '';
+          mainComments.forEach(function(mc) {
+            html += `
+              <div class="comment-card">
+                <div class="comment-author-name">👤 ${mc.user}</div>
+                <div class="comment-text-body">${mc.text}</div>
+                <div class="comment-footer-row">
+                  <span class="comment-timestamp">${mc.time}</span>
+                  <button class="btn-reply-link" onclick="prepareReply('${mc.id}', '${mc.user}')">💬 ឆ្លើយតប</button>
+                </div>
+            `;
+
+            // បង្ហាញ Replies ពីក្រោម
+            var subReplies = replies.filter(function(r) { return String(r.parentId) === String(mc.id); });
+            subReplies.forEach(function(r) {
+              html += `
+                <div class="reply-card">
+                  <div class="comment-author-name">↳ ${r.user}</div>
+                  <div class="comment-text-body">${r.text}</div>
+                  <div class="comment-timestamp">${r.time}</div>
+                </div>
+              `;
+            });
+
+            html += `</div>`;
+          });
+
+          list.innerHTML = html;
+        })
+        .catch(function() {
+          list.innerHTML = '<div style="font-size:12px; color:#71717a; text-align:center;">មិនអាចទាញមតិយោបល់បានទេ។</div>';
+        });
+    }
+
+    function prepareReply(commentId, userName) {
+      replyingParentId = commentId;
+      document.getElementById('replyToUser').innerText = userName;
+      document.getElementById('replyAlert').style.display = 'block';
+      document.getElementById('commentInput').focus();
+    }
+
+    function cancelReply() {
+      replyingParentId = null;
+      document.getElementById('replyAlert').style.display = 'none';
     }
 
     function submitComment() {
@@ -959,20 +1070,27 @@
       if (!text) return;
 
       var userName = loggedInUser ? loggedInUser.name : 'អ្នកទស្សនាទូទៅ';
-      var storeKey = 'COMMENTS_' + (activeMovie.id || activeMovie.title);
-      var comments = JSON.parse(localStorage.getItem(storeKey) || '[]');
-
-      var newComment = {
+      var payload = {
+        action: 'add_comment',
+        movieId: activeMovie.id,
+        parentId: replyingParentId || '',
         user: userName,
         text: text,
-        time: new Date().toLocaleTimeString('km-KH', { hour: '2-digit', minute: '2-digit' }) + ' • ថ្ងៃនេះ'
+        time: new Date().toLocaleTimeString('km-KH', { hour: '2-digit', minute: '2-digit' }) + ' • ' + new Date().toLocaleDateString('km-KH')
       };
 
-      comments.unshift(newComment);
-      localStorage.setItem(storeKey, JSON.stringify(comments));
-
       input.value = '';
-      loadMovieComments(activeMovie.id || activeMovie.title);
+      cancelReply();
+
+      fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+      .then(function() {
+        setTimeout(function() { loadMovieComments(activeMovie.id); }, 1200);
+      });
     }
 
     function filterByChip(name, el) {
