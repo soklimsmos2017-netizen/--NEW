@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOKLIM STREAM - វេទិកាភាពយន្ត និងរឿងភាគកម្សាន្ត</title>
+  
+  <!-- Khmer Fonts & Montserrat -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              red: '#E50914',
+              redHover: '#B81D24',
+              dark: '#0f0f10',
+              surface: '#18181b',
+              surfaceLight: '#27272a',
+              gold: '#f59e0b',
+              goldHover: '#d97706'
+            }
+          },
+          fontFamily: {
+            khmer: ['"Kantumruy Pro"', 'sans-serif'],
+            logo: ['Montserrat', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Kantumruy Pro', sans-serif;
+      background-color: #0f0f10;
+      color: #f4f4f5;
+      overflow-x: hidden;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0f0f10; }
+    ::-webkit-scrollbar-thumb { background: #27272a; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #E50914; }
+
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* Marquee Animation */
+    @keyframes marqueeScroll {
+      0% { transform: translateX(100vw); }
+      100% { transform: translateX(-100%); }
+    }
+    .animate-marquee {
+      display: inline-block;
+      white-space: nowrap;
+      animation: marqueeScroll 25s linear infinite;
+    }
+    .animate-marquee:hover {
+      animation-play-state: paused;
+    }
+
+    .aspect-poster {
+      aspect-ratio: 2 / 3;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-brand-red selection:text-white">
+
+  <!-- ================= 1. MARQUEE ANNOUNCEMENT ================= -->
+  <div class="bg-gradient-to-r from-red-950 via-zinc-900 to-black text-zinc-300 text-xs py-2 px-4 border-b border-zinc-800 overflow-hidden flex items-center sticky top-0 z-50">
+    <div class="flex items-center gap-1.5 shrink-0 bg-brand-red text-white text-[11px] font-bold px-2.5 py-0.5 rounded-md shadow mr-3">
+      <i class="fa-solid fa-cloud-arrow-up text-[10px] animate-pulse"></i>
+      <span>CLOUD SYNC</span>
+    </div>
+    <div class="overflow-hidden w-full relative">
+      <div class="animate-marquee text-xs font-medium text-zinc-300">
+        📢 សូមស្វាគមន៍មកកាន់ SOKLIM STREAM • រីករាយទស្សនាខ្សែភាពយន្តកម្រិត HD ច្បាស់ត្រជាក់ភ្នែក • គាំទ្រ Google Drive ដោយផ្ទាល់ និង Sync ទូទាំងពិភពលោក!
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 2. HEADER NAVBAR ================= -->
+  <header class="sticky top-[37px] z-40 bg-[#0f0f10]/95 backdrop-blur-md border-b border-zinc-800 px-3 sm:px-6 py-3">
+    <div class="max-w-[1720px] mx-auto flex items-center justify-between gap-2 sm:gap-4">
+      
+      <!-- Logo -->
+      <div class="flex items-center gap-2 cursor-pointer shrink-0" onclick="resetFiltersAndHome()">
+        <span class="font-logo font-black text-2xl sm:text-3xl tracking-tight text-white">
+          SOK<span class="text-brand-red">LIM</span>
+        </span>
+      </div>
+
+      <!-- YouTube Centered Search Bar -->
+      <div class="flex-1 max-w-xl mx-2 sm:mx-6">
+        <div class="flex items-center w-full rounded-full bg-zinc-900 border border-zinc-700/80 focus-within:border-brand-red overflow-hidden shadow-inner transition-colors">
+          <div class="pl-3.5 pr-1 text-zinc-400">
+            <i class="fa-solid fa-magnifying-glass text-xs sm:text-sm"></i>
+          </div>
+          <input 
+            type="text" 
+            id="searchInput"
+            oninput="handleSearch(this.value)"
+            placeholder="ស្វែងរកចំណងជើងរឿង, ប្រភេទ, ប្រទេស..." 
+            class="w-full bg-transparent text-white text-xs sm:text-sm py-2 px-2 focus:outline-none placeholder-zinc-500"
+          >
+          <button id="clearSearchBtn" onclick="clearSearch()" class="hidden px-2 text-zinc-400 hover:text-white">
+            <i class="fa-solid fa-xmark text-xs"></i>
+          </button>
+          <button onclick="handleSearch(document.getElementById('searchInput').value)" class="bg-zinc-800 hover:bg-zinc-700 text-zinc-300 px-4 py-2 border-l border-zinc-700 transition-colors">
+            <i class="fa-solid fa-magnifying-glass text-xs"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Header Action Buttons -->
+      <div class="flex items-center gap-2 shrink-0">
+        <!-- Add Movie Button (Visible only to SOKLIM) -->
+        <button 
+          id="addMovieBtn" 
+          onclick="openAddMovieModal()" 
+          class="hidden items-center gap-1.5 bg-brand-red hover:bg-brand-redHover text-white text-xs sm:text-sm font-semibold px-3 sm:px-4 py-2 rounded-full shadow-lg shadow-red-700/20 active:scale-95 transition-all">
+          <i class="fa-solid fa-plus text-xs"></i>
+          <span class="hidden md:inline">បន្ថែមរឿង</span>
+        </button>
+
+        <!-- User Authentication Button -->
+        <button 
+          id="authBtn" 
+          onclick="handleAuthButtonClick()" 
+          class="flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 px-3.5 py-2 rounded-full border border-zinc-700 text-xs sm:text-sm font-medium transition-all">
+          <i id="authBtnIcon" class="fa-regular fa-user text-xs"></i>
+          <span id="authBtnLabel">ចូលគណនី</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ================= 3. FILTER CHIPS ================= -->
+  <div class="bg-[#121214] border-b border-zinc-800/80 px-4 sm:px-8 py-2.5">
+    <div class="max-w-[1720px] mx-auto overflow-x-auto no-scrollbar flex items-center gap-2 text-xs">
+      <button onclick="filterByChip('ទាំងអស់', this)" class="chip-item active px-4 py-1.5 rounded-full font-bold bg-white text-black shrink-0 transition-colors">ទាំងអស់</button>
+      <button onclick="filterByChip('ខ្មែរ', this)" class="chip-item px-3.5 py-1.5 rounded-full bg-zinc-800 text-zinc-300 hover:text-white shrink-0 transition-colors">🇰🇭 ខ្មែរ</button>
+      <button onclick="filterByChip('កូរ៉េ', this)" class="chip-item px-3.5 py-1.5 rounded-full bg-zinc-800 text-zinc-300 hover:text-white shrink-0 transition-colors">🇰🇷 កូរ៉េ</button>
+      <button onclick="filterByChip('ចិន', this)" class="chip-item px-3.5 py-1.5 rounded-full bg-zinc-800 text-zinc-300 hover:text-white shrink-0 transition-colors">🇨🇳 ចិន</button>
+      <button onclick="filterByChip('ហូលីវូដ', this)" class="chip-item px-3.5 py-1.5 rounded-full bg-zinc-800 text-zinc-300 hover:text-white shrink-0 transition-colors">🎬 ហូលីវូដ</button>
+      <button onclick="filterByChip('សកម្មភាព', this)" class="chip-item px-3.5 py-1.5 rounded-full bg-zinc-800 text-zinc-300 hover:text-white shrink-0 transition-colors">សកម្មភាព</button>
+      <button onclick="filterByChip('មនោសញ្ចេតនា', this)" class="chip-item px-3.5 py-1.5 rounded-full bg-zinc-800 text-zinc-300 hover:text-white shrink-0 transition-colors">មនោសញ្ចេតនា</button>
+      <button onclick="filterByChip('ភ័យរន្ធត់', this)" class="chip-item px-3.5 py-1.5 rounded-full bg-zinc-800 text-zinc-300 hover:text-white shrink-0 transition-colors">ភ័យរន្ធត់</button>
+      <button onclick="filterByChip('គំនូរជីវចល', this)" class="chip-item px-3.5 py-1.5 rounded-full bg-zinc-800 text-zinc-300 hover:text-white shrink-0 transition-colors">គំនូរជីវចល</button>
+    </div>
+  </div>
+
+  <!-- ================= 4. MAIN VERTICAL POSTER MOVIE FEED ================= -->
+  <main class="flex-1 max-w-[1720px] w-full mx-auto px-4 sm:px-8 py-6">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
+        <span class="w-2.5 h-5 bg-brand-red rounded-full inline-block"></span>
+        <span id="sectionHeaderTitle">ភាពយន្តទាំងអស់</span>
+      </h2>
+      <div class="flex items-center gap-2">
+        <span id="syncIndicator" class="text-[11px] text-emerald-400 bg-emerald-950/60 border border-emerald-800 px-2.5 py-0.5 rounded-full flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+          <span>Cloud Online</span>
+        </span>
+        <span id="movieCountBadge" class="text-xs text-zinc-400 bg-zinc-800 px-3 py-1 rounded-full border border-zinc-700/60">
+          0 ភាពយន្ត
+        </span>
+      </div>
+    </div>
+
+    <!-- Movie Grid -->
+    <div id="moviesGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 lg:gap-5">
+      <!-- Injected via JavaScript -->
+    </div>
+
+    <!-- Empty Results Screen -->
+    <div id="emptySearchNotice" class="hidden py-20 text-center">
+      <div class="w-16 h-16 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center mx-auto mb-3 text-zinc-500 text-2xl">
+        <i class="fa-solid fa-film"></i>
+      </div>
+      <h3 class="text-base font-bold text-zinc-300">មិនមានភាពយន្តត្រូវតាមការស្វែងរក</h3>
+      <p class="text-xs text-zinc-500 mt-1">សូមសាកល្បងស្វែងរកឈ្មោះផ្សេង ឬចុចកំណត់ឡើងវិញ</p>
+      <button onclick="resetFiltersAndHome()" class="mt-4 px-5 py-2 bg-zinc-800 hover:bg-zinc-700 text-white text-xs font-semibold rounded-full transition-colors">
+        កំណត់ឡើងវិញ
+      </button>
+    </div>
+  </main>
+
+  <!-- ================= 5. VIDEO PLAYER MODAL ================= -->
+  <div id="playerModal" class="fixed inset-0 z-50 hidden bg-black/95 backdrop-blur-md flex items-center justify-center p-2 sm:p-4 md:p-6 overflow-y-auto">
+    <div class="relative w-full max-w-5xl bg-zinc-900 border border-zinc-700/80 rounded-2xl sm:rounded-3xl shadow-2xl overflow-hidden my-auto">
+      
+      <!-- Video Frame Container -->
+      <div class="relative w-full aspect-video bg-black">
+        <div id="playerContainer" class="w-full h-full"></div>
+        <button onclick="closePlayerModal()" class="absolute top-3 right-3 w-9 h-9 rounded-full bg-black/70 hover:bg-black text-white flex items-center justify-center backdrop-blur-sm z-20 transition-all">
+          <i class="fa-solid fa-xmark text-sm"></i>
+        </button>
+      </div>
+
+      <!-- Player Meta and Details -->
+      <div class="p-4 sm:p-6 space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h1 id="playerMovieTitle" class="text-lg sm:text-2xl font-black text-white leading-tight">ចំណងជើងរឿង</h1>
+            <p id="playerMovieMeta" class="text-xs sm:text-sm text-zinc-400 mt-1 flex items-center gap-2">
+              <span id="playerCountryTag">ខ្មែរ</span> • <span id="playerGenreTag">សកម្មភាព</span> • <span class="text-brand-red font-semibold">HD</span>
+            </p>
+          </div>
+          <div class="flex items-center gap-2 shrink-0">
+            <!-- Edit Button Directly in Player -->
+            <button 
+              id="inPlayerEditBtn" 
+              onclick="editFromPlayer()" 
+              class="hidden items-center gap-1.5 bg-brand-gold hover:bg-brand-goldHover text-black text-xs sm:text-sm font-bold px-3.5 py-1.5 rounded-full shadow transition-all">
+              <i class="fa-solid fa-pen-to-square text-xs"></i>
+              <span>កែប្រែរឿងនេះ</span>
+            </button>
+            <button onclick="closePlayerModal()" class="bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-xs sm:text-sm px-3.5 py-1.5 rounded-full border border-zinc-700 transition-colors">
+              បិទ
+            </button>
+          </div>
+        </div>
+
+        <p id="playerMovieDesc" class="text-xs sm:text-sm text-zinc-300 leading-relaxed max-w-4xl border-t border-zinc-800 pt-3">
+          <!-- Description -->
+        </p>
+
+        <!-- Series Episodes Selector -->
+        <div id="playerEpisodesSection" class="hidden border-t border-zinc-800 pt-3 space-y-2">
+          <h4 class="text-xs sm:text-sm font-bold text-zinc-200 flex items-center gap-1.5">
+            <i class="fa-solid fa-list-ol text-brand-red"></i>
+            <span>ជ្រើសរើសភាគទស្សនា៖</span>
+          </h4>
+          <div id="playerEpisodesList" class="flex flex-wrap gap-2 max-h-48 overflow-y-auto no-scrollbar py-1"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= 6. USER LOGIN & REGISTRATION MODAL ================= -->
+  <div id="loginModal" class="fixed inset-0 z-50 hidden bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="relative w-full max-w-sm bg-zinc-900 border border-zinc-700 rounded-3xl p-6 sm:p-7 space-y-4 shadow-2xl">
+      <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
+        <div class="flex items-center gap-2">
+          <button id="authTabLogin" onclick="switchAuthTab('login')" class="text-sm font-bold text-white border-b-2 border-brand-red pb-1">ចូលគណនី</button>
+          <span class="text-zinc-600">|</span>
+          <button id="authTabRegister" onclick="switchAuthTab('register')" class="text-sm font-bold text-zinc-400 hover:text-white pb-1">បង្កើតគណនីថ្មី</button>
+        </div>
+        <button onclick="closeLoginModal()" class="w-7 h-7 rounded-full bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-white flex items-center justify-center">
+          <i class="fa-solid fa-xmark text-xs"></i>
+        </button>
+      </div>
+
+      <!-- Login Form -->
+      <form id="loginForm" onsubmit="handleLoginSubmit(event)" class="space-y-3.5">
+        <div>
+          <label class="block text-xs font-semibold text-zinc-300 mb-1">ឈ្មោះអ្នកប្រើ (Username)</label>
+          <input 
+            type="text" 
+            id="loginUsername" 
+            required
+            placeholder="Username" 
+            class="w-full bg-zinc-950 text-white text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-zinc-700 focus:outline-none focus:border-brand-red"
+          >
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-zinc-300 mb-1">ពាក្យសម្ងាត់ (Password)</label>
+          <input 
+            type="password" 
+            id="loginPassword" 
+            required
+            placeholder="••••••••••" 
+            class="w-full bg-zinc-950 text-white text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-zinc-700 focus:outline-none focus:border-brand-red"
+          >
+        </div>
+
+        <button 
+          type="submit" 
+          class="w-full bg-brand-red hover:bg-brand-redHover text-white text-xs sm:text-sm font-bold py-2.5 rounded-xl shadow-lg transition-all active:scale-95">
+          ចូលគណនី
+        </button>
+      </form>
+
+      <!-- Registration Form -->
+      <form id="registerForm" onsubmit="handleRegisterSubmit(event)" class="hidden space-y-3.5">
+        <div>
+          <label class="block text-xs font-semibold text-zinc-300 mb-1">ឈ្មោះគណនីថ្មី (Username) *</label>
+          <input 
+            type="text" 
+            id="regUsername" 
+            required
+            placeholder="កំណត់ឈ្មោះគណនី..." 
+            class="w-full bg-zinc-950 text-white text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-zinc-700 focus:outline-none focus:border-brand-red"
+          >
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-zinc-300 mb-1">លេខសម្ងាត់ (Password) *</label>
+          <input 
+            type="password" 
+            id="regPassword" 
+            required
+            placeholder="យ៉ាងតិច ៤ ខ្ទង់..." 
+            class="w-full bg-zinc-950 text-white text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-zinc-700 focus:outline-none focus:border-brand-red"
+          >
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-zinc-300 mb-1">បញ្ជាក់លេខសម្ងាត់ (Confirm Password) *</label>
+          <input 
+            type="password" 
+            id="regConfirmPassword" 
+            required
+            placeholder="បញ្ចូលលេខសម្ងាត់ម្តងទៀត..." 
+            class="w-full bg-zinc-950 text-white text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-zinc-700 focus:outline-none focus:border-brand-red"
+          >
+        </div>
+
+        <button 
+          type="submit" 
+          class="w-full bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-bold py-2.5 rounded-xl shadow-lg transition-all active:scale-95">
+          ចុះឈ្មោះគណនីថ្មី
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================= 7. ADD / EDIT MOVIE MODAL (SOKLIM ONLY) ================= -->
+  <div id="movieFormModal" class="fixed inset-0 z-50 hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-5 overflow-y-auto">
+    <div class="relative w-full max-w-2xl bg-zinc-900 border border-zinc-700 rounded-3xl shadow-2xl overflow-hidden my-auto">
+      
+      <div class="p-4 sm:p-5 bg-zinc-950 border-b border-zinc-800 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="w-8 h-8 rounded-lg bg-brand-red/20 text-brand-red flex items-center justify-center text-sm">
+            <i class="fa-solid fa-clapperboard" id="formHeaderIcon"></i>
+          </div>
+          <h3 class="text-base font-bold text-white" id="formModalTitle">បន្ថែមរឿងថ្មី</h3>
+        </div>
+        <button onclick="closeMovieFormModal()" class="w-8 h-8 rounded-full bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-white flex items-center justify-center">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <form id="movieForm" onsubmit="handleSaveMovie(event)" class="p-4 sm:p-6 space-y-4 max-h-[80vh] overflow-y-auto">
+        <input type="hidden" id="editMovieId" value="">
+
+        <!-- Title -->
+        <div>
+          <label class="block text-xs font-semibold text-zinc-300 mb-1">ចំណងជើងរឿង *</label>
+          <input 
+            type="text" 
+            id="fTitle" 
+            required 
+            placeholder="ឧទាហរណ៍៖ រឿង អាថ៌កំបាំងប្រាសាទបុរាណ" 
+            class="w-full bg-zinc-950 text-white text-xs sm:text-sm rounded-xl px-3.5 py-2.5 border border-zinc-700 focus:border-brand-red focus:outline-none"
+          >
+        </div>
+
+        <!-- Poster URL -->
+        <div>
+          <label class="block text-xs font-semibold text-zinc-300 mb-1">តំណភ្ជាប់រូបភាព Poster (URL) *</label>
+          <input 
+            type="url" 
+            id="fPoster" 
+            required
+            placeholder="https://images.unsplash.com/... ឬ Image Link" 
+            class="w-full bg-zinc-950 text-white text-xs sm:text-sm rounded-xl px-3.5 py-2.5 border border-zinc-700 focus:border-brand-red focus:outline-none"
+          >
+        </div>
+
+        <!-- Country & Genre (Thailand Removed) -->
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-zinc-300 mb-1">ប្រទេស *</label>
+            <select id="fCountry" class="w-full bg-zinc-950 text-white text-xs rounded-xl px-3 py-2 border border-zinc-700 focus:border-brand-red">
+              <option value="ខ្មែរ">ខ្មែរ</option>
+              <option value="កូរ៉េ">កូរ៉េ</option>
+              <option value="ចិន">ចិន</option>
+              <option value="ហូលីវូដ">ហូលីវូដ</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-zinc-300 mb-1">ប្រភេទរឿង *</label>
+            <select id="fGenre" class="w-full bg-zinc-950 text-white text-xs rounded-xl px-3 py-2 border border-zinc-700 focus:border-brand-red">
+              <option value="សកម្មភាព">សកម្មភាព</option>
+              <option value="មនោសញ្ចេតនា">មនោសញ្ចេតនា</option>
+              <option value="ភ័យរន្ធត់">ភ័យរន្ធត់</option>
+              <option value="កំប្លែង">កំប្លែង</option>
+              <option value="គំនូរជីវចល">គំនូរជីវចល</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Format Type: Single or Series -->
+        <div class="bg-zinc-950 p-3.5 rounded-2xl border border-zinc-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-white">ទម្រង់ភាពយន្ត</span>
+            <div class="flex items-center gap-4 text-xs">
+              <label class="inline-flex items-center gap-1.5 cursor-pointer">
+                <input type="radio" name="fMovieType" value="single" checked onchange="toggleFormatFields()" class="text-brand-red">
+                <span>រឿងទោល (Single)</span>
+              </label>
+              <label class="inline-flex items-center gap-1.5 cursor-pointer">
+                <input type="radio" name="fMovieType" value="series" onchange="toggleFormatFields()" class="text-brand-red">
+                <span>រឿងភាគ (Series / Playlist)</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Single Movie Inputs (Google Drive Link) -->
+          <div id="singleFormatFields" class="space-y-2 pt-2 border-t border-zinc-800">
+            <label class="block text-xs text-zinc-300 font-semibold">
+              <i class="fa-brands fa-google-drive text-brand-red mr-1"></i> តំណភ្ជាប់វីដេអូ Google Drive *
+            </label>
+            <input 
+              type="text" 
+              id="fSingleUrl" 
+              placeholder="https://drive.google.com/file/d/.../view?usp=sharing" 
+              class="w-full bg-zinc-900 text-white text-xs rounded-xl px-3.5 py-2.5 border border-zinc-700 focus:border-brand-red focus:outline-none"
+            >
+            <p class="text-[11px] text-zinc-500">
+              * គន្លឹះ៖ ត្រូវប្រាកដថាបានកំណត់ Permission ក្នុង Google Drive ជា "Anyone with the link can view"។
+            </p>
+          </div>
+
+          <!-- Series Format Inputs -->
+          <div id="seriesFormatFields" class="hidden space-y-2 pt-2 border-t border-zinc-800">
+            <div class="flex items-center justify-between">
+              <span class="text-xs text-zinc-300 font-semibold">បញ្ជីភាគ (Episodes)</span>
+              <button 
+                type="button" 
+                onclick="addEpisodeFormRow()" 
+                class="bg-brand-red hover:bg-brand-redHover text-white text-[11px] font-bold px-3 py-1 rounded-lg transition-colors">
+                + បន្ថែមភាគ
+              </button>
+            </div>
+            <div id="episodesFormContainer" class="space-y-2.5 max-h-56 overflow-y-auto pr-1"></div>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div>
+          <label class="block text-xs font-semibold text-zinc-300 mb-1">សង្ខេបសាច់រឿង</label>
+          <textarea 
+            id="fDescription" 
+            rows="3" 
+            placeholder="ពិពណ៌នាខ្លីៗពីរឿង..." 
+            class="w-full bg-zinc-950 text-white text-xs rounded-xl p-3 border border-zinc-700 focus:border-brand-red focus:outline-none"
+          ></textarea>
+        </div>
+
+        <!-- UPLOAD & SYNC PROGRESS STATUS BAR (YouTube Style) -->
+        <div id="uploadProgressBarBox" class="hidden bg-zinc-950 p-3 rounded-xl border border-zinc-800 space-y-2">
+          <div class="flex items-center justify-between text-xs">
+            <span id="uploadStatusText" class="text-zinc-300 font-semibold flex items-center gap-1.5">
+              <i class="fa-solid fa-spinner fa-spin text-brand-red"></i> កំពុងបញ្ជូនទិន្នន័យទៅ Cloud...
+            </span>
+            <span id="uploadPercentage" class="text-brand-red font-bold">0%</span>
+          </div>
+          <div class="w-full h-2 bg-zinc-800 rounded-full overflow-hidden">
+            <div id="uploadProgressFill" class="h-full bg-brand-red transition-all duration-300 w-0"></div>
+          </div>
+        </div>
+
+        <!-- Modal Footer Actions -->
+        <div class="flex items-center justify-between pt-3 border-t border-zinc-800">
+          <button 
+            type="button" 
+            id="deleteMovieBtn" 
+            onclick="handleDeleteMovie()" 
+            class="hidden px-4 py-2 rounded-xl text-xs font-bold text-white bg-red-800 hover:bg-red-700 transition-colors">
+            លុបរឿងនេះ
+          </button>
+
+          <div class="flex items-center gap-2 ml-auto">
+            <button 
+              type="button" 
+              onclick="closeMovieFormModal()" 
+              class="px-4 py-2 rounded-xl text-xs font-medium text-zinc-400 bg-zinc-800 hover:bg-zinc-700 transition-colors">
+              បោះបង់
+            </button>
+            <button 
+              type="submit" 
+              id="submitMovieFormBtn"
+              class="px-5 py-2 rounded-xl text-xs font-bold text-white bg-brand-red hover:bg-brand-redHover shadow-lg transition-all flex items-center gap-1.5">
+              <span>ផ្សព្វផ្សាយរឿង</span>
+            </button>
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+  <!-- ================= 8. TOAST NOTIFICATION ================= -->
+  <div id="toastBox" class="fixed bottom-5 right-5 z-50 transform translate-y-24 opacity-0 transition-all duration-300 bg-zinc-800 text-white border border-zinc-700 px-4 py-2.5 rounded-xl shadow-2xl flex items-center gap-2.5 text-xs">
+    <i class="fa-solid fa-circle-check text-brand-red text-sm" id="toastIcon"></i>
+    <span id="toastMessage">ដំណឹង</span>
+  </div>
+
+  <!-- ================= 9. FOOTER ================= -->
+  <footer class="bg-black border-t border-zinc-850 py-6 text-zinc-500 text-xs mt-12">
+    <div class="max-w-[1720px] mx-auto px-4 sm:px-8 flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <span class="font-logo font-black text-white text-base">SOK<span class="text-brand-red">LIM</span></span>
+        <span>• វេទិកាភាពយន្ត និងរឿងភាគកម្សាន្ត Cloud Database</span>
+      </div>
+      <div>
+        <span>មើលដោយការទទួលខុសត្រូវ 18+</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= 10. FIREBASE MODULE APPLICATION JAVASCRIPT ================= -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, deleteDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    /* ----------------------------------------------------
+       1. INITIAL FALLBACK MOVIES
+    ---------------------------------------------------- */
+    const INITIAL_MOVIES = [
+      {
+        id: "m-1",
+        title: "អាថ៌កំបាំងប្រាសាទបុរាណ (Secret Temple)",
+        country: "ខ្មែរ",
+        genre: "សកម្មភាព",
+        poster: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=700&auto=format&fit=crop&q=80",
+        type: "series",
+        description: "ដំណើរផ្សងព្រេងរបស់ក្រុមអ្នកស្រាវជ្រាវវ័យក្មេងក្នុងព្រៃជ្រៅដើម្បីរុករកអាថ៌កំបាំងប្រាសាទបុរាណសម័យអង្គរ។",
+        episodes: [
+          { epNum: 1, title: "ភាគ ០១", url: "https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview" },
+          { epNum: 2, title: "ភាគ ០២", url: "https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview" },
+          { epNum: 3, title: "ភាគ ០៣", url: "https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview" }
+        ],
+        videoUrl: ""
+      },
+      {
+        id: "m-2",
+        title: "ស្នេហ៍ឆ្លងវេហា (Love Across The Stars)",
+        country: "កូរ៉េ",
+        genre: "មនោសញ្ចេតនា",
+        poster: "https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=700&auto=format&fit=crop&q=80",
+        type: "series",
+        description: "រឿងរ៉ាវស្នេហាផ្អែមល្ហែម និងឧបសគ្គរវាងកវីនិពន្ធ និងតារាចម្រៀងដ៏ល្បីល្បាញ។",
+        episodes: [
+          { epNum: 1, title: "ភាគ ០១", url: "https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview" },
+          { epNum: 2, title: "ភាគ ០២", url: "https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview" }
+        ],
+        videoUrl: ""
+      },
+      {
+        id: "m-3",
+        title: "ស្តេចស្វា ស៊ុនអ៊ូខុង (The Monkey King)",
+        country: "ចិន",
+        genre: "សកម្មភាព",
+        poster: "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=700&auto=format&fit=crop&q=80",
+        type: "single",
+        description: "ការប្រយុទ្ធដ៏អស្ចារ្យរបស់ស្តេចស្វាស៊ុនអ៊ូខុងដើម្បីការពារពិភពត្រៃត្រិង្សពីបិសាចកំណាច។",
+        videoUrl: "https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview",
+        episodes: []
+      },
+      {
+        id: "m-4",
+        title: "វិញ្ញាណឆ្លងភព (Phantom Realm)",
+        country: "ខ្មែរ",
+        genre: "ភ័យរន្ធត់",
+        poster: "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?w=700&auto=format&fit=crop&q=80",
+        type: "single",
+        description: "រឿងរ៉ាវព្រឺព្រួចនៅពេលក្រុមយុវជនបានវង្វេងចូលទៅក្នុងភូមិស្ងាត់ជ្រងំដែលមានវិញ្ញាណយាមការពារ។",
+        videoUrl: "https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview",
+        episodes: []
+      },
+      {
+        id: "m-5",
+        title: "ពិភពមន្តអាគមនាគរាជ (Dragon Kingdom)",
+        country: "ហូលីវូដ",
+        genre: "គំនូរជីវចល",
+        poster: "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=700&auto=format&fit=crop&q=80",
+        type: "single",
+        description: "គំនូរជីវចលដ៏រំភើប អំពីក្មេងប្រុសម្នាក់ដែលរៀនចេះភាសានាគដើម្បីជួយសង្គ្រោះពិភពលោក។",
+        videoUrl: "https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview",
+        episodes: []
+      },
+      {
+        id: "m-6",
+        title: "កំពូលអ្នកលេងកំប្លែង (The Comedy Master)",
+        country: "ខ្មែរ",
+        genre: "កំប្លែង",
+        poster: "https://images.unsplash.com/photo-1517604931442-7e0c8ed2963c?w=700&auto=format&fit=crop&q=80",
+        type: "single",
+        description: "សំណើចសប្បាយរីករាយ និងការប្រកួតប្រជែងរបស់អ្នកលេងកំប្លែងប្រចាំភូមិ។",
+        videoUrl: "https://drive.google.com/file/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs/preview",
+        episodes: []
+      }
+    ];
+
+    /* ----------------------------------------------------
+       2. STATE & FIREBASE INIT
+    ---------------------------------------------------- */
+    const STORAGE_KEY_AUTH = "SOKLIM_AUTH_USER_SESSION";
+    const STORAGE_KEY_USERS = "SOKLIM_REGISTERED_USERS";
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'soklim-cinema-app';
+
+    let db = null;
+    let auth = null;
+    let isCloudReady = false;
+
+    let movies = [...INITIAL_MOVIES];
+    let currentAuthUser = null;
+    let isOwner = false;
+    let activeFilterChip = "ទាំងអស់";
+    let currentPlayingMovie = null;
+    let currentPlayingEpisodeIndex = 0;
+    let episodesFormState = [];
+
+    // Setup Firebase if config provided
+    async function initCloudDatabase() {
+      try {
+        if (typeof __firebase_config !== 'undefined') {
+          const firebaseConfig = JSON.parse(__firebase_config);
+          const app = initializeApp(firebaseConfig);
+          auth = getAuth(app);
+          db = getFirestore(app);
+
+          if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+            await signInWithCustomToken(auth, __initial_auth_token);
+          } else {
+            await signInAnonymously(auth);
+          }
+
+          // Listen Real-time across devices
+          const moviesCol = collection(db, 'artifacts', appId, 'public', 'data', 'movies');
+          onSnapshot(moviesCol, (snapshot) => {
+            if (!snapshot.empty) {
+              const cloudList = [];
+              snapshot.forEach(docSnap => {
+                cloudList.push(docSnap.data());
+              });
+              movies = cloudList;
+            } else {
+              // Populate default if empty
+              INITIAL_MOVIES.forEach(async (m) => {
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'movies', m.id), m);
+              });
+              movies = [...INITIAL_MOVIES];
+            }
+            renderMovieCards();
+            updateSyncIndicator(true);
+          }, (err) => {
+            console.warn("Firestore sync fallback to local:", err);
+            updateSyncIndicator(false);
+          });
+
+          isCloudReady = true;
+        } else {
+          // Local fallback
+          loadLocalMovies();
+          updateSyncIndicator(false);
+        }
+      } catch (err) {
+        console.warn("Cloud connection error, using local fallback:", err);
+        loadLocalMovies();
+        updateSyncIndicator(false);
+      }
+    }
+
+    function updateSyncIndicator(online) {
+      const el = document.getElementById("syncIndicator");
+      if (!el) return;
+      if (online) {
+        el.className = "text-[11px] text-emerald-400 bg-emerald-950/60 border border-emerald-800 px-2.5 py-0.5 rounded-full flex items-center gap-1.5";
+        el.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span><span>Cloud Online</span>';
+      } else {
+        el.className = "text-[11px] text-zinc-400 bg-zinc-800/80 border border-zinc-700 px-2.5 py-0.5 rounded-full flex items-center gap-1.5";
+        el.innerHTML = '<span class="w-2 h-2 rounded-full bg-amber-500"></span><span>Local Ready</span>';
+      }
+    }
+
+    function loadLocalMovies() {
+      try {
+        const local = localStorage.getItem("SOKLIM_FALLBACK_MOVIES");
+        if (local) {
+          movies = JSON.parse(local);
+        } else {
+          movies = [...INITIAL_MOVIES];
+        }
+      } catch (e) {
+        movies = [...INITIAL_MOVIES];
+      }
+      renderMovieCards();
+    }
+
+    function saveLocalMovies() {
+      try {
+        localStorage.setItem("SOKLIM_FALLBACK_MOVIES", JSON.stringify(movies));
+      } catch (e) {}
+    }
+
+    /* ----------------------------------------------------
+       3. AUTHENTICATION LOGIC
+    ---------------------------------------------------- */
+    function loadAuthSession() {
+      try {
+        const savedAuth = localStorage.getItem(STORAGE_KEY_AUTH);
+        if (savedAuth) {
+          currentAuthUser = JSON.parse(savedAuth);
+          isOwner = (currentAuthUser.username === "SOKLIM" && currentAuthUser.role === "owner");
+        } else {
+          currentAuthUser = null;
+          isOwner = false;
+        }
+      } catch (e) {
+        currentAuthUser = null;
+        isOwner = false;
+      }
+      updateAuthUI();
+    }
+
+    function updateAuthUI() {
+      const authBtn = document.getElementById("authBtn");
+      const authBtnLabel = document.getElementById("authBtnLabel");
+      const authBtnIcon = document.getElementById("authBtnIcon");
+      const addMovieBtn = document.getElementById("addMovieBtn");
+      const inPlayerEditBtn = document.getElementById("inPlayerEditBtn");
+
+      if (currentAuthUser) {
+        if (isOwner) {
+          authBtnLabel.innerText = "ចាកចេញ (SOKLIM)";
+          authBtn.className = "flex items-center gap-2 bg-brand-gold hover:bg-brand-goldHover text-black px-3.5 py-2 rounded-full font-bold text-xs sm:text-sm shadow transition-all";
+          authBtnIcon.className = "fa-solid fa-crown text-xs";
+          addMovieBtn.classList.remove("hidden");
+          addMovieBtn.classList.add("flex");
+          if (inPlayerEditBtn) {
+            inPlayerEditBtn.classList.remove("hidden");
+            inPlayerEditBtn.classList.add("inline-flex");
+          }
+        } else {
+          authBtnLabel.innerText = `ចាកចេញ (${currentAuthUser.username})`;
+          authBtn.className = "flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 px-3.5 py-2 rounded-full border border-zinc-700 text-xs sm:text-sm font-medium transition-all";
+          authBtnIcon.className = "fa-solid fa-circle-user text-xs text-brand-red";
+          addMovieBtn.classList.add("hidden");
+          addMovieBtn.classList.remove("flex");
+          if (inPlayerEditBtn) {
+            inPlayerEditBtn.classList.add("hidden");
+            inPlayerEditBtn.classList.remove("inline-flex");
+          }
+        }
+      } else {
+        authBtnLabel.innerText = "ចូលគណនី";
+        authBtn.className = "flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-200 px-3.5 py-2 rounded-full border border-zinc-700 text-xs sm:text-sm font-medium transition-all";
+        authBtnIcon.className = "fa-regular fa-user text-xs";
+        addMovieBtn.classList.add("hidden");
+        addMovieBtn.classList.remove("flex");
+        if (inPlayerEditBtn) {
+          inPlayerEditBtn.classList.add("hidden");
+          inPlayerEditBtn.classList.remove("inline-flex");
+        }
+      }
+    }
+
+    window.handleAuthButtonClick = function() {
+      if (currentAuthUser) {
+        currentAuthUser = null;
+        isOwner = false;
+        localStorage.removeItem(STORAGE_KEY_AUTH);
+        updateAuthUI();
+        showToast("បានចាកចេញពីគណនី!");
+      } else {
+        openLoginModal();
+      }
+    };
+
+    window.switchAuthTab = function(tab) {
+      const tabLogin = document.getElementById("authTabLogin");
+      const tabRegister = document.getElementById("authTabRegister");
+      const formLogin = document.getElementById("loginForm");
+      const formRegister = document.getElementById("registerForm");
+
+      if (tab === "login") {
+        tabLogin.className = "text-sm font-bold text-white border-b-2 border-brand-red pb-1";
+        tabRegister.className = "text-sm font-bold text-zinc-400 hover:text-white pb-1";
+        formLogin.classList.remove("hidden");
+        formRegister.classList.add("hidden");
+      } else {
+        tabRegister.className = "text-sm font-bold text-white border-b-2 border-emerald-500 pb-1";
+        tabLogin.className = "text-sm font-bold text-zinc-400 hover:text-white pb-1";
+        formRegister.classList.remove("hidden");
+        formLogin.classList.add("hidden");
+      }
+    };
+
+    function openLoginModal() {
+      document.getElementById("loginUsername").value = "";
+      document.getElementById("loginPassword").value = "";
+      document.getElementById("regUsername").value = "";
+      document.getElementById("regPassword").value = "";
+      document.getElementById("regConfirmPassword").value = "";
+      window.switchAuthTab("login");
+      document.getElementById("loginModal").classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+    }
+
+    window.closeLoginModal = function() {
+      document.getElementById("loginModal").classList.add("hidden");
+      document.body.style.overflow = "auto";
+    };
+
+    function getRegisteredUsers() {
+      try {
+        const u = localStorage.getItem(STORAGE_KEY_USERS);
+        return u ? JSON.parse(u) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    window.handleRegisterSubmit = function(e) {
+      e.preventDefault();
+      const u = document.getElementById("regUsername").value.trim();
+      const p = document.getElementById("regPassword").value.trim();
+      const cp = document.getElementById("regConfirmPassword").value.trim();
+
+      if (!u || !p) {
+        showToast("សូមបំពេញឈ្មោះ និងលេខសម្ងាត់!");
+        return;
+      }
+      if (u.toUpperCase() === "SOKLIM") {
+        showToast("ឈ្មោះគណនីនេះត្រូវបានបម្រុងទុក!");
+        return;
+      }
+      if (p !== cp) {
+        showToast("លេខសម្ងាត់បញ្ជាក់មិនត្រូវគ្នាទេ!");
+        return;
+      }
+
+      const users = getRegisteredUsers();
+      if (users.find(x => x.username.toLowerCase() === u.toLowerCase())) {
+        showToast("ឈ្មោះគណនីនេះមានអ្នកចុះឈ្មោះរួចហើយ!");
+        return;
+      }
+
+      users.push({ username: u, password: p });
+      localStorage.setItem(STORAGE_KEY_USERS, JSON.stringify(users));
+
+      currentAuthUser = { username: u, role: "viewer" };
+      isOwner = false;
+      localStorage.setItem(STORAGE_KEY_AUTH, JSON.stringify(currentAuthUser));
+      updateAuthUI();
+      window.closeLoginModal();
+      showToast(`ការចុះឈ្មោះជោគជ័យ! ស្វាគមន៍ ${u}`);
+    };
+
+    window.handleLoginSubmit = function(e) {
+      e.preventDefault();
+      const u = document.getElementById("loginUsername").value.trim();
+      const p = document.getElementById("loginPassword").value.trim();
+
+      // Owner credentials
+      if (u === "SOKLIM" && p === "12345678910") {
+        currentAuthUser = { username: "SOKLIM", role: "owner" };
+        isOwner = true;
+        localStorage.setItem(STORAGE_KEY_AUTH, JSON.stringify(currentAuthUser));
+        updateAuthUI();
+        window.closeLoginModal();
+        showToast("សូមស្វាគមន៍ SOKLIM! សិទ្ធិគ្រប់គ្រងត្រូវបានបើក។");
+        return;
+      }
+
+      // Viewer credentials
+      const users = getRegisteredUsers();
+      const match = users.find(x => x.username.toLowerCase() === u.toLowerCase() && x.password === p);
+
+      if (match) {
+        currentAuthUser = { username: match.username, role: "viewer" };
+        isOwner = false;
+        localStorage.setItem(STORAGE_KEY_AUTH, JSON.stringify(currentAuthUser));
+        updateAuthUI();
+        window.closeLoginModal();
+        showToast(`ស្វាគមន៍ការចូលមកកាន់គេហទំព័រ ${match.username}!`);
+      } else {
+        showToast("ឈ្មោះគណនី ឬលេខសម្ងាត់មិនត្រឹមត្រូវទេ!");
+      }
+    };
+
+    /* ----------------------------------------------------
+       4. GOOGLE DRIVE LINK CONVERTER
+    ---------------------------------------------------- */
+    function formatGoogleDriveUrl(url) {
+      if (!url) return "";
+      const trimmed = url.trim();
+      if (trimmed.includes("drive.google.com")) {
+        const idMatch = trimmed.match(/\/d\/([a-zA-Z0-9_-]+)/);
+        if (idMatch && idMatch[1]) {
+          return `https://drive.google.com/file/d/${idMatch[1]}/preview`;
+        }
+      }
+      return trimmed;
+    }
+
+    /* ----------------------------------------------------
+       5. RENDER MOVIE CARDS & FEED
+    ---------------------------------------------------- */
+    function renderMovieCards(filteredList = null) {
+      const container = document.getElementById("moviesGrid");
+      const emptyNotice = document.getElementById("emptySearchNotice");
+      const countBadge = document.getElementById("movieCountBadge");
+
+      let displayList = filteredList;
+      if (!displayList) {
+        if (activeFilterChip === "ទាំងអស់") {
+          displayList = movies;
+        } else {
+          displayList = movies.filter(m => m.country === activeFilterChip || m.genre === activeFilterChip);
+        }
+      }
+
+      countBadge.innerText = `${displayList.length} ភាពយន្ត`;
+
+      if (displayList.length === 0) {
+        container.innerHTML = "";
+        emptyNotice.classList.remove("hidden");
+        return;
+      }
+
+      emptyNotice.classList.add("hidden");
+      container.innerHTML = displayList.map(m => {
+        const isSeries = (m.type === "series");
+        const epCount = isSeries && m.episodes ? m.episodes.length : 0;
+        const posterSrc = m.poster || 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=700&auto=format&fit=crop&q=80';
+
+        return `
+          <div onclick="window.openPlayerModal('${m.id}')" class="group bg-zinc-900/90 rounded-2xl overflow-hidden border border-zinc-800 hover:border-brand-red/60 transition-all duration-300 hover:-translate-y-1.5 shadow-lg hover:shadow-red-950/20 cursor-pointer flex flex-col">
+            <div class="relative w-full aspect-poster bg-zinc-950 overflow-hidden">
+              <img 
+                src="${posterSrc}" 
+                alt="${m.title}" 
+                loading="lazy" 
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                onerror="this.src='https://placehold.co/600x900/18181b/ffffff?text=Poster'"
+              >
+              <div class="absolute top-2 left-2 flex items-center gap-1">
+                ${isSeries ? `<span class="bg-black/80 backdrop-blur-sm text-brand-gold text-[10px] font-bold px-2 py-0.5 rounded-md border border-brand-gold/30">${epCount} ភាគ</span>` : ''}
+              </div>
+              <div class="absolute bottom-2 right-2">
+                <span class="bg-black/80 backdrop-blur-sm text-white text-[10px] font-bold px-1.5 py-0.5 rounded border border-white/20">HD</span>
+              </div>
+            </div>
+
+            <div class="p-3 flex-1 flex flex-col justify-between">
+              <div>
+                <h3 class="text-xs sm:text-sm font-bold text-white line-clamp-1 group-hover:text-brand-red transition-colors" title="${m.title}">
+                  ${m.title}
+                </h3>
+                <p class="text-[11px] text-zinc-400 mt-1 line-clamp-1">
+                  ${m.country} • ${m.genre}
+                </p>
+              </div>
+
+              <div class="mt-2.5 pt-2 border-t border-zinc-800/80 flex items-center justify-between text-[11px] text-zinc-500">
+                <span class="flex items-center gap-1">
+                  <i class="fa-regular fa-circle-play text-brand-red text-xs"></i> ទស្សនា
+                </span>
+                ${isOwner ? `
+                  <button onclick="event.stopPropagation(); window.openEditMovieModal('${m.id}')" class="text-brand-gold hover:text-white px-1.5 py-0.5 rounded hover:bg-zinc-800 transition-colors">
+                    <i class="fa-solid fa-pen-to-square text-[11px]"></i> កែ
+                  </button>
+                ` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    /* ----------------------------------------------------
+       6. FILTER & SEARCH HANDLERS
+    ---------------------------------------------------- */
+    window.filterByChip = function(chipName, el) {
+      activeFilterChip = chipName;
+      document.querySelectorAll(".chip-item").forEach(c => {
+        c.className = "chip-item px-3.5 py-1.5 rounded-full bg-zinc-800 text-zinc-300 hover:text-white shrink-0 transition-colors";
+      });
+      el.className = "chip-item active px-4 py-1.5 rounded-full font-bold bg-white text-black shrink-0 transition-colors";
+      
+      document.getElementById("sectionHeaderTitle").innerText = (chipName === "ទាំងអស់") ? "ភាពយន្តទាំងអស់" : `ភាពយន្ត៖ ${chipName}`;
+      renderMovieCards();
+    };
+
+    window.handleSearch = function(query) {
+      const q = (query || "").trim().toLowerCase();
+      const clearBtn = document.getElementById("clearSearchBtn");
+      
+      if (q) {
+        clearBtn.classList.remove("hidden");
+      } else {
+        clearBtn.classList.add("hidden");
+      }
+
+      if (!q) {
+        renderMovieCards();
+        return;
+      }
+
+      const results = movies.filter(m => 
+        (m.title && m.title.toLowerCase().includes(q)) ||
+        (m.country && m.country.toLowerCase().includes(q)) ||
+        (m.genre && m.genre.toLowerCase().includes(q)) ||
+        (m.description && m.description.toLowerCase().includes(q))
+      );
+
+      document.getElementById("sectionHeaderTitle").innerText = `លទ្ធផលស្វែងរក: "${query}"`;
+      renderMovieCards(results);
+    };
+
+    window.clearSearch = function() {
+      const input = document.getElementById("searchInput");
+      input.value = "";
+      document.getElementById("clearSearchBtn").classList.add("hidden");
+      document.getElementById("sectionHeaderTitle").innerText = "ភាពយន្តទាំងអស់";
+      renderMovieCards();
+    };
+
+    window.resetFiltersAndHome = function() {
+      window.clearSearch();
+      const firstChip = document.querySelector(".chip-item");
+      if (firstChip) window.filterByChip("ទាំងអស់", firstChip);
+    };
+
+    /* ----------------------------------------------------
+       7. VIDEO PLAYER LOGIC
+    ---------------------------------------------------- */
+    window.openPlayerModal = function(movieId) {
+      const m = movies.find(x => x.id === movieId);
+      if (!m) return;
+
+      currentPlayingMovie = m;
+      currentPlayingEpisodeIndex = 0;
+
+      document.getElementById("playerMovieTitle").innerText = m.title;
+      document.getElementById("playerCountryTag").innerText = m.country;
+      document.getElementById("playerGenreTag").innerText = m.genre;
+      document.getElementById("playerMovieDesc").innerText = m.description || "គ្មានការពិពណ៌នា។";
+
+      const inPlayerEditBtn = document.getElementById("inPlayerEditBtn");
+      if (isOwner) {
+        inPlayerEditBtn.classList.remove("hidden");
+        inPlayerEditBtn.classList.add("inline-flex");
+      } else {
+        inPlayerEditBtn.classList.add("hidden");
+        inPlayerEditBtn.classList.remove("inline-flex");
+      }
+
+      const seriesBox = document.getElementById("playerEpisodesSection");
+      const epList = document.getElementById("playerEpisodesList");
+
+      if (m.type === "series" && m.episodes && m.episodes.length > 0) {
+        seriesBox.classList.remove("hidden");
+        epList.innerHTML = m.episodes.map((ep, idx) => `
+          <button 
+            onclick="window.switchEpisode(${idx})" 
+            class="ep-switch-btn ${idx === 0 ? 'bg-brand-red text-white' : 'bg-zinc-800 text-zinc-300 hover:bg-zinc-700'} text-xs font-semibold px-3 py-1.5 rounded-lg border border-zinc-700 transition-colors">
+            ${ep.title || `ភាគ ០${idx + 1}`}
+          </button>
+        `).join('');
+
+        loadVideoToViewport(m.episodes[0].url);
+      } else {
+        seriesBox.classList.add("hidden");
+        loadVideoToViewport(m.videoUrl);
+      }
+
+      document.getElementById("playerModal").classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+    };
+
+    window.switchEpisode = function(index) {
+      if (!currentPlayingMovie || !currentPlayingMovie.episodes || !currentPlayingMovie.episodes[index]) return;
+      currentPlayingEpisodeIndex = index;
+
+      const buttons = document.querySelectorAll(".ep-switch-btn");
+      buttons.forEach((btn, idx) => {
+        if (idx === index) {
+          btn.className = "ep-switch-btn bg-brand-red text-white text-xs font-semibold px-3 py-1.5 rounded-lg border border-zinc-700 transition-colors";
+        } else {
+          btn.className = "ep-switch-btn bg-zinc-800 text-zinc-300 hover:bg-zinc-700 text-xs font-semibold px-3 py-1.5 rounded-lg border border-zinc-700 transition-colors";
+        }
+      });
+
+      loadVideoToViewport(currentPlayingMovie.episodes[index].url);
+    };
+
+    function loadVideoToViewport(rawUrl) {
+      const container = document.getElementById("playerContainer");
+      if (!rawUrl) {
+        container.innerHTML = `<div class="w-full h-full flex items-center justify-center text-zinc-500 text-xs">មិនទាន់មានវីដេអូសម្រាប់ចាក់នៅឡើយទេ</div>`;
+        return;
+      }
+
+      const streamUrl = formatGoogleDriveUrl(rawUrl);
+
+      container.innerHTML = `
+        <iframe 
+          src="${streamUrl}" 
+          allow="autoplay; fullscreen" 
+          allowfullscreen 
+          class="w-full h-full border-0">
+        </iframe>
+      `;
+    }
+
+    window.closePlayerModal = function() {
+      document.getElementById("playerContainer").innerHTML = "";
+      document.getElementById("playerModal").classList.add("hidden");
+      document.body.style.overflow = "auto";
+      currentPlayingMovie = null;
+    };
+
+    window.editFromPlayer = function() {
+      if (!currentPlayingMovie || !isOwner) return;
+      const targetId = currentPlayingMovie.id;
+      window.closePlayerModal();
+      window.openEditMovieModal(targetId);
+    };
+
+    /* ----------------------------------------------------
+       8. ADD / EDIT MOVIE (SOKLIM OWNER)
+    ---------------------------------------------------- */
+    window.openAddMovieModal = function() {
+      if (!isOwner) return;
+
+      document.getElementById("formModalTitle").innerText = "បន្ថែមរឿងថ្មីទៅ Cloud";
+      document.getElementById("formHeaderIcon").className = "fa-solid fa-plus";
+      document.getElementById("editMovieId").value = "";
+      document.getElementById("movieForm").reset();
+      document.getElementById("deleteMovieBtn").classList.add("hidden");
+      document.getElementById("uploadProgressBarBox").classList.add("hidden");
+
+      episodesFormState = [{ epNum: 1, title: "ភាគ ០១", url: "" }];
+
+      document.querySelector('input[name="fMovieType"][value="single"]').checked = true;
+      window.toggleFormatFields();
+
+      document.getElementById("movieFormModal").classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+    };
+
+    window.openEditMovieModal = function(movieId) {
+      if (!isOwner) return;
+
+      const m = movies.find(item => item.id === movieId);
+      if (!m) return;
+
+      document.getElementById("formModalTitle").innerText = "កែប្រែរឿងលើ Cloud";
+      document.getElementById("formHeaderIcon").className = "fa-solid fa-pen-to-square";
+      document.getElementById("editMovieId").value = m.id;
+      document.getElementById("fTitle").value = m.title;
+      document.getElementById("fPoster").value = m.poster || "";
+      document.getElementById("fCountry").value = m.country || "ខ្មែរ";
+      document.getElementById("fGenre").value = m.genre || "សកម្មភាព";
+      document.getElementById("fDescription").value = m.description || "";
+      document.getElementById("deleteMovieBtn").classList.remove("hidden");
+      document.getElementById("uploadProgressBarBox").classList.add("hidden");
+
+      if (m.type === "series") {
+        document.querySelector('input[name="fMovieType"][value="series"]').checked = true;
+        episodesFormState = m.episodes ? JSON.parse(JSON.stringify(m.episodes)) : [{ epNum: 1, title: "ភាគ ០១", url: "" }];
+      } else {
+        document.querySelector('input[name="fMovieType"][value="single"]').checked = true;
+        document.getElementById("fSingleUrl").value = m.videoUrl || "";
+        episodesFormState = [{ epNum: 1, title: "ភាគ ០១", url: "" }];
+      }
+
+      window.toggleFormatFields();
+      renderEpisodeFormRows();
+
+      document.getElementById("movieFormModal").classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+    };
+
+    window.closeMovieFormModal = function() {
+      document.getElementById("movieFormModal").classList.add("hidden");
+      document.body.style.overflow = "auto";
+    };
+
+    window.toggleFormatFields = function() {
+      const type = document.querySelector('input[name="fMovieType"]:checked').value;
+      const singleBox = document.getElementById("singleFormatFields");
+      const seriesBox = document.getElementById("seriesFormatFields");
+
+      if (type === "single") {
+        singleBox.classList.remove("hidden");
+        seriesBox.classList.add("hidden");
+      } else {
+        singleBox.classList.add("hidden");
+        seriesBox.classList.remove("hidden");
+        if (episodesFormState.length === 0) {
+          window.addEpisodeFormRow();
+        } else {
+          renderEpisodeFormRows();
+        }
+      }
+    };
+
+    window.addEpisodeFormRow = function() {
+      const nextNum = episodesFormState.length + 1;
+      episodesFormState.push({
+        epNum: nextNum,
+        title: `ភាគ ០${nextNum}`,
+        url: ""
+      });
+      renderEpisodeFormRows();
+    };
+
+    window.removeEpisodeFormRow = function(index) {
+      if (episodesFormState.length <= 1) {
+        showToast("ត្រូវមានយ៉ាងហោចណាស់ ១ ភាគ!");
+        return;
+      }
+      episodesFormState.splice(index, 1);
+      renderEpisodeFormRows();
+    };
+
+    function renderEpisodeFormRows() {
+      const container = document.getElementById("episodesFormContainer");
+      container.innerHTML = episodesFormState.map((ep, idx) => `
+        <div class="p-2.5 bg-zinc-900 rounded-xl border border-zinc-800 flex items-center gap-2">
+          <input 
+            type="text" 
+            value="${ep.title}" 
+            placeholder="ឈ្មោះភាគ" 
+            oninput="episodesFormState[${idx}].title = this.value"
+            class="w-24 sm:w-28 bg-zinc-950 text-white text-xs px-2.5 py-1.5 rounded-lg border border-zinc-700"
+          >
+          <input 
+            type="text" 
+            value="${ep.url}" 
+            placeholder="Google Drive (https://drive.google.com/...)" 
+            oninput="episodesFormState[${idx}].url = this.value"
+            class="flex-1 bg-zinc-950 text-white text-xs px-2.5 py-1.5 rounded-lg border border-zinc-700"
+          >
+          <button 
+            type="button" 
+            onclick="window.removeEpisodeFormRow(${idx})" 
+            class="text-zinc-500 hover:text-red-400 p-1.5 text-xs">
+            <i class="fa-solid fa-trash-can"></i>
+          </button>
+        </div>
+      `).join('');
+    }
+
+    /* ----------------------------------------------------
+       9. SIMULATED PROGRESS & SAVE TO CLOUD
+    ---------------------------------------------------- */
+    window.handleSaveMovie = async function(e) {
+      e.preventDefault();
+      if (!isOwner) return;
+
+      const editId = document.getElementById("editMovieId").value;
+      const title = document.getElementById("fTitle").value.trim();
+      const poster = document.getElementById("fPoster").value.trim();
+      const country = document.getElementById("fCountry").value;
+      const genre = document.getElementById("fGenre").value;
+      const desc = document.getElementById("fDescription").value.trim();
+      const type = document.querySelector('input[name="fMovieType"]:checked').value;
+
+      let singleVideoLink = document.getElementById("fSingleUrl").value.trim();
+      let validatedEpisodes = [];
+
+      if (type === "series") {
+        validatedEpisodes = episodesFormState.filter(ep => ep.url && ep.url.trim() !== "");
+        if (validatedEpisodes.length === 0) {
+          showToast("សូមបញ្ចូលតំណភ្ជាប់ Google Drive យ៉ាងហោចណាស់ ១ ភាគ!");
+          return;
+        }
+      } else {
+        if (!singleVideoLink) {
+          showToast("សូមបញ្ចូលតំណភ្ជាប់ Google Drive សម្រាប់វីដេអូ!");
+          return;
+        }
+      }
+
+      // Display YouTube-style Upload/Sync progress
+      const progressBox = document.getElementById("uploadProgressBarBox");
+      const progressFill = document.getElementById("uploadProgressFill");
+      const percentageText = document.getElementById("uploadPercentage");
+      const statusText = document.getElementById("uploadStatusText");
+      const submitBtn = document.getElementById("submitMovieFormBtn");
+
+      progressBox.classList.remove("hidden");
+      submitBtn.disabled = true;
+
+      // Animate progress 0% -> 40% -> 80% -> 100%
+      statusText.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-brand-red"></i> កំពុងត្រួតពិនិត្យតំណភ្ជាប់ Google Drive...';
+      progressFill.style.width = "30%";
+      percentageText.innerText = "30%";
+
+      await new Promise(r => setTimeout(r, 400));
+
+      statusText.innerHTML = '<i class="fa-solid fa-cloud-arrow-up text-brand-gold"></i> កំពុងបញ្ជូនទិន្នន័យទៅ Cloud Database...';
+      progressFill.style.width = "75%";
+      percentageText.innerText = "75%";
+
+      const targetId = editId || ("m-" + Date.now());
+      const moviePayload = {
+        id: targetId,
+        title: title,
+        poster: poster,
+        country: country,
+        genre: genre,
+        type: type,
+        description: desc || "ភាពយន្តថ្មីទើបតែបញ្ចូល។",
+        videoUrl: type === "single" ? formatGoogleDriveUrl(singleVideoLink) : "",
+        episodes: type === "series" ? validatedEpisodes.map(ep => ({ ...ep, url: formatGoogleDriveUrl(ep.url) })) : []
+      };
+
+      try {
+        if (isCloudReady && db) {
+          await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'movies', targetId), moviePayload);
+        } else {
+          // Local fallback
+          if (editId) {
+            const idx = movies.findIndex(m => m.id === editId);
+            if (idx !== -1) movies[idx] = moviePayload;
+          } else {
+            movies.unshift(moviePayload);
+          }
+          saveLocalMovies();
+          renderMovieCards();
+        }
+
+        progressFill.style.width = "100%";
+        percentageText.innerText = "100%";
+        statusText.innerHTML = '<i class="fa-solid fa-circle-check text-emerald-400"></i> បានផ្សព្វផ្សាយជោគជ័យទៅកាន់ Cloud!';
+
+        await new Promise(r => setTimeout(r, 600));
+
+        showToast(editId ? "បានកែប្រែរឿងដោយជោគជ័យ! ✨" : "បានបន្ថែមរឿងថ្មីទៅ Cloud រួចរាល់! 🎉");
+        window.closeMovieFormModal();
+      } catch (err) {
+        console.error(err);
+        showToast("មានបញ្ហាក្នុងការរក្សាទុក សូមព្យាយាមម្តងទៀត!");
+      } finally {
+        submitBtn.disabled = false;
+        progressBox.classList.add("hidden");
+      }
+    };
+
+    window.handleDeleteMovie = async function() {
+      const editId = document.getElementById("editMovieId").value;
+      if (!editId || !isOwner) return;
+
+      try {
+        if (isCloudReady && db) {
+          await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'movies', editId));
+        } else {
+          movies = movies.filter(m => m.id !== editId);
+          saveLocalMovies();
+          renderMovieCards();
+        }
+        showToast("បានលុបរឿងចេញពី Cloud រួចរាល់!");
+        window.closeMovieFormModal();
+      } catch (err) {
+        console.error(err);
+        showToast("មានបញ្ហាក្នុងការលុប!");
+      }
+    };
+
+    /* ----------------------------------------------------
+       10. TOAST NOTIFICATION
+    ---------------------------------------------------- */
+    function showToast(msg) {
+      const box = document.getElementById("toastBox");
+      const label = document.getElementById("toastMessage");
+      label.innerText = msg;
+
+      box.classList.remove("translate-y-24", "opacity-0");
+      box.classList.add("translate-y-0", "opacity-100");
+
+      setTimeout(() => {
+        box.classList.remove("translate-y-0", "opacity-100");
+        box.classList.add("translate-y-24", "opacity-0");
+      }, 3000);
+    }
+
+    // Escape listener
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") {
+        window.closePlayerModal();
+        window.closeLoginModal();
+        window.closeMovieFormModal();
+      }
+    });
+
+    // Start App
+    window.addEventListener("DOMContentLoaded", () => {
+      loadAuthSession();
+      initCloudDatabase();
+    });
+  </script>
+</body>
+</html>
