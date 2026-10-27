@@ -11,7 +11,6 @@
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Kantumruy Pro', sans-serif; }
     body { background-color: #0f0f10; color: #f4f4f5; min-height: 100vh; display: flex; flex-direction: column; }
 
-    /* Marquee */
     .marquee-bar {
       background: #18181b;
       color: #e4e4e7;
@@ -22,9 +21,9 @@
       white-space: nowrap;
     }
     .marquee-text { display: inline-block; animation: scroll-left 25s linear infinite; }
+    .marquee-text:hover { animation-play-state: paused; }
     @keyframes scroll-left { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
 
-    /* Header */
     header {
       background-color: #18181b;
       padding: 12px 20px;
@@ -49,18 +48,15 @@
     .btn-gray { background: #27272a; color: #fff; border: 1px solid rgba(255,255,255,0.15); }
     .btn-gold { background: #f59e0b; color: #000; font-weight: bold; }
 
-    /* Category Chips */
     .chips-bar { display: flex; gap: 8px; overflow-x: auto; padding: 12px 20px; background: #121214; }
     .chips-bar::-webkit-scrollbar { display: none; }
     .chip { padding: 5px 12px; border-radius: 14px; background: #27272a; color: #d4d4d8; font-size: 12px; white-space: nowrap; cursor: pointer; }
     .chip.active { background: #fff; color: #000; font-weight: bold; }
 
-    /* Main Container */
     main { flex: 1; padding: 20px; max-width: 1300px; margin: 0 auto; width: 100%; }
     .grid-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
     .grid-title { font-size: 16px; font-weight: bold; }
     
-    /* Movie Grid */
     .movies-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
@@ -85,7 +81,6 @@
     .card-title { font-size: 13px; font-weight: bold; color: #fff; line-height: 1.3; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     .card-meta { font-size: 11px; color: #a1a1aa; margin-top: auto; }
 
-    /* Modals */
     .modal-box { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 300; padding: 16px; align-items: center; justify-content: center; }
     .modal-box.active { display: flex; }
     .form-wrapper { width: 100%; max-width: 420px; background: #1c1c1f; border-radius: 12px; padding: 20px; border: 1px solid rgba(255,255,255,0.15); max-height: 90vh; overflow-y: auto; }
@@ -93,7 +88,6 @@
     .form-group label { font-size: 12px; color: #a1a1aa; font-weight: bold; }
     .form-control { width: 100%; padding: 8px 10px; border-radius: 6px; background: #27272a; border: 1px solid #3f3f46; color: #fff; font-size: 13px; outline: none; }
 
-    /* Video Player Modal */
     .player-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 200; padding: 16px; align-items: center; justify-content: center; }
     .player-modal.active { display: flex; }
     .player-box { width: 100%; max-width: 900px; background: #18181b; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.15); }
@@ -106,29 +100,24 @@
 </head>
 <body>
 
-  <!-- 1. Marquee Bar -->
   <div class="marquee-bar">
     <div class="marquee-text">
       📢 សូមស្វាគមន៍មកកាន់ SOKLIM STREAM • រីករាយទស្សនាភាពយន្តកម្រិត HD ច្បាស់ត្រជាក់ភ្នែក • បញ្ចូលរឿងផ្ទាល់រត់ចូល Google Sheet ភ្លាមៗ!
     </div>
   </div>
 
-  <!-- 2. Header -->
   <header>
     <div class="brand" onclick="location.reload()">SOKLIM</div>
-
     <div class="search-box">
       <input type="text" id="searchInput" placeholder="ស្វែងរកចំណងជើងរឿង..." onkeyup="searchMovies()">
       <button onclick="searchMovies()">🔍</button>
     </div>
-
     <div class="header-btns">
       <button id="addBtn" class="btn btn-red" style="display:none;" onclick="openAddModal()">+ បន្ថែមរឿង</button>
       <button id="authBtn" class="btn btn-gray" onclick="toggleAuth()">ចូលគណនី</button>
     </div>
   </header>
 
-  <!-- 3. Category Filter Chips (គ្មានប្រទេសថៃ) -->
   <div class="chips-bar">
     <div class="chip active" onclick="filterByChip('ទាំងអស់', this)">ទាំងអស់</div>
     <div class="chip" onclick="filterByChip('ខ្មែរ', this)">ខ្មែរ</div>
@@ -141,7 +130,6 @@
     <div class="chip" onclick="filterByChip('កំប្លែង', this)">កំប្លែង</div>
   </div>
 
-  <!-- 4. Movies Grid -->
   <main>
     <div class="grid-header">
       <div class="grid-title" id="pageTitle">ភាពយន្តទាំងអស់</div>
@@ -152,7 +140,6 @@
     </div>
   </main>
 
-  <!-- 5. Login Modal -->
   <div class="modal-box" id="loginModal">
     <div class="form-wrapper" style="max-width: 320px;">
       <h3 style="margin-bottom: 12px;">ចូលគណនីគ្រប់គ្រង</h3>
@@ -171,7 +158,6 @@
     </div>
   </div>
 
-  <!-- 6. Add Movie Modal (Save directly to Google Sheet) -->
   <div class="modal-box" id="formModal">
     <div class="form-wrapper">
       <h3 style="margin-bottom: 12px;">បន្ថែមរឿងថ្មីទៅ Google Sheet</h3>
@@ -212,7 +198,6 @@
     </div>
   </div>
 
-  <!-- 7. Video Player Modal -->
   <div class="player-modal" id="playerModal">
     <div class="player-box">
       <div class="video-frame" id="playerFrame"></div>
@@ -227,10 +212,7 @@
   </div>
 
   <script>
-    // 1. Google Sheet ID
     var GOOGLE_SHEET_ID = '1PKpl7XPsKV8PIuKKkf9EDhvPLWOhrRcuF_EOIqKkfbk';
-    
-    // 2. Google Apps Script Web App URL របស់លោកអ្នក
     var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzX1oF-vJJAerLDIzBjXaLlgE70g7YNPmSBzNwXHiBa4aDtf73mBbX9WIJs_hh97SYk/exec';
 
     var allMovies = [];
@@ -273,7 +255,7 @@
         localStorage.setItem('IS_OWNER', 'true');
         refreshAuthUI();
         closeLogin();
-        alert('ស្វាគមន៍ SOKLIM! លោកអ្នកអាចចុច "+ បន្ថែមរឿង" បានឥឡូវនេះ។');
+        alert('ស្វាគមន៍ SOKLIM!');
       } else {
         alert('Username ឬ Password មិនត្រឹមត្រូវ!');
       }
@@ -290,7 +272,6 @@
       document.getElementById('formModal').classList.remove('active');
     }
 
-    // បញ្ជូនទិន្នន័យរឿងថ្មីទៅកាន់ Google Sheet តាម Apps Script
     function submitMovieToSheet() {
       var title = document.getElementById('mTitle').value.trim();
       var country = document.getElementById('mCountry').value;
@@ -337,7 +318,18 @@
       });
     }
 
-    // ទាញបញ្ជីរឿងពី Google Sheet
+    // មុខងារបំប្លែង Link Google Drive ឱ្យទៅជារូបភាពបង្ហាញបាន
+    function formatPosterUrl(url) {
+      if (!url) return 'https://via.placeholder.com/300x450?text=No+Poster';
+      if (url.indexOf('drive.google.com') !== -1) {
+        var match = url.match(/\/d\/([a-zA-Z0-9_-]+)/);
+        if (match && match[1]) {
+          return 'https://drive.google.com/thumbnail?id=' + match[1] + '&sz=w600';
+        }
+      }
+      return url;
+    }
+
     function loadMoviesFromSheet() {
       var url = 'https://docs.google.com/spreadsheets/d/' + GOOGLE_SHEET_ID + '/gviz/tq?tqx=out:csv&sheet=Sheet1';
 
@@ -359,12 +351,19 @@
 
     function parseCSV(text) {
       var lines = text.trim().split(/\r\n|\n/);
-      if (lines.length <= 1) return [];
+      if (lines.length === 0) return [];
 
-      var headers = lines[0].split(',').map(function(h) { return h.replace(/(^"|"$)/g, '').trim().toLowerCase(); });
+      var firstLineValues = lines[0].split(',').map(function(h) { return h.replace(/(^"|"$)/g, '').trim(); });
+      var isHeader = (firstLineValues[0].toLowerCase() === 'id' || firstLineValues[1].toLowerCase() === 'title');
+
+      var headers = isHeader 
+        ? firstLineValues.map(function(h){ return h.toLowerCase(); })
+        : ['id', 'title', 'country', 'genre', 'poster', 'url'];
+
+      var startIndex = isHeader ? 1 : 0;
       var results = [];
 
-      for (var i = 1; i < lines.length; i++) {
+      for (var i = startIndex; i < lines.length; i++) {
         var row = lines[i];
         if (!row.trim()) continue;
 
@@ -391,9 +390,11 @@
       var html = '';
       for (var i = 0; i < list.length; i++) {
         var m = list[i];
+        var posterSrc = formatPosterUrl(m.poster);
+
         html += '<div class="movie-card" onclick="playMovie(' + i + ')">';
         html += '<div class="poster-wrap">';
-        html += '<img src="' + (m.poster || 'https://via.placeholder.com/300x450?text=No+Poster') + '" loading="lazy" onerror="this.src=\'https://via.placeholder.com/300x450?text=Movie\'">';
+        html += '<img src="' + posterSrc + '" loading="lazy" onerror="this.src=\'https://via.placeholder.com/300x450?text=Poster+Error\'">';
         html += '<div class="ep-tag">HD</div>';
         html += '</div>';
         html += '<div class="card-info">';
@@ -465,7 +466,6 @@
       renderMovies(filtered);
     }
 
-    // ចាប់ផ្តើមដំណើរការ
     refreshAuthUI();
     loadMoviesFromSheet();
   </script>
