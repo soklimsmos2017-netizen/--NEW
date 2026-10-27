@@ -2,21 +2,22 @@
 <html lang="km">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>SOKLIM STREAM - វេទិកាភាពយន្ត</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;600;700&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Kantumruy Pro', sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background-color: #0f0f10; color: #f4f4f5; min-height: 100vh; display: flex; flex-direction: column; }
+    body { background-color: #0b0b0c; color: #f4f4f5; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
 
+    /* Top Marquee */
     .marquee-bar {
-      background: #18181b;
+      background: #141417;
       color: #e4e4e7;
-      font-size: 13px;
-      padding: 8px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+      font-size: 12.5px;
+      padding: 7px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
       overflow: hidden;
       white-space: nowrap;
     }
@@ -24,49 +25,52 @@
     .marquee-text:hover { animation-play-state: paused; }
     @keyframes scroll-left { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
 
+    /* Header */
     header {
-      background-color: #18181b;
-      padding: 12px 20px;
+      background-color: #121215;
+      padding: 12px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+      gap: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
       position: sticky;
       top: 0;
       z-index: 100;
     }
-    .brand { font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: 900; color: #E50914; cursor: pointer; letter-spacing: 1px; }
+    .brand { font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 900; color: #E50914; cursor: pointer; letter-spacing: 1px; }
     
-    .search-box { flex: 1; max-width: 480px; display: flex; background: #121214; border: 1px solid #3f3f46; border-radius: 20px; overflow: hidden; margin: 0 10px; }
-    .search-box input { flex: 1; padding: 8px 14px; background: transparent; border: none; color: #fff; font-size: 13px; outline: none; }
-    .search-box button { background: #27272a; border: none; color: #a1a1aa; padding: 0 14px; cursor: pointer; }
+    .search-box { flex: 1; max-width: 480px; display: flex; background: #1a1a1e; border: 1px solid #33333a; border-radius: 20px; overflow: hidden; margin: 0 6px; }
+    .search-box input { flex: 1; padding: 7px 12px; background: transparent; border: none; color: #fff; font-size: 13px; outline: none; }
+    .search-box button { background: #26262c; border: none; color: #a1a1aa; padding: 0 12px; cursor: pointer; }
 
-    .header-btns { display: flex; gap: 8px; }
-    .btn { padding: 7px 14px; border-radius: 18px; font-size: 12.5px; font-weight: 600; cursor: pointer; border: none; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+    .header-btns { display: flex; gap: 6px; }
+    .btn { padding: 6px 12px; border-radius: 16px; font-size: 12px; font-weight: 600; cursor: pointer; border: none; display: inline-flex; align-items: center; justify-content: center; gap: 5px; }
     .btn-red { background: #E50914; color: #fff; }
-    .btn-gray { background: #27272a; color: #fff; border: 1px solid rgba(255,255,255,0.15); }
+    .btn-gray { background: #222228; color: #fff; border: 1px solid rgba(255,255,255,0.12); }
     .btn-gold { background: #f59e0b; color: #000; font-weight: bold; }
     .btn-oauth { width: 100%; border: 1px solid #3f3f46; border-radius: 8px; padding: 9px; font-size: 13px; font-weight: 600; cursor: pointer; margin-bottom: 8px; }
     .btn-google { background: #ffffff; color: #1f2937; }
     .btn-facebook { background: #1877f2; color: #ffffff; }
 
-    .chips-bar { display: flex; gap: 8px; overflow-x: auto; padding: 12px 20px; background: #121214; }
+    /* Category Chips */
+    .chips-bar { display: flex; gap: 8px; overflow-x: auto; padding: 10px 16px; background: #121215; border-bottom: 1px solid rgba(255,255,255,0.04); }
     .chips-bar::-webkit-scrollbar { display: none; }
-    .chip { padding: 5px 12px; border-radius: 14px; background: #27272a; color: #d4d4d8; font-size: 12px; white-space: nowrap; cursor: pointer; }
+    .chip { padding: 5px 12px; border-radius: 14px; background: #202026; color: #d4d4d8; font-size: 12px; white-space: nowrap; cursor: pointer; }
     .chip.active { background: #fff; color: #000; font-weight: bold; }
 
-    main { flex: 1; padding: 20px; max-width: 1300px; margin: 0 auto; width: 100%; }
+    /* Main Container (Home View) */
+    #homeView { flex: 1; padding: 16px; max-width: 1300px; margin: 0 auto; width: 100%; }
     .grid-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
-    .grid-title { font-size: 16px; font-weight: bold; }
+    .grid-title { font-size: 15px; font-weight: bold; }
     
     .movies-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 14px;
     }
     .movie-card {
-      background: #18181b;
+      background: #141418;
       border-radius: 10px;
       overflow: hidden;
       cursor: pointer;
@@ -76,7 +80,7 @@
       transition: transform 0.2s;
     }
     .movie-card:hover { transform: translateY(-4px); border-color: #E50914; }
-    .poster-wrap { position: relative; width: 100%; aspect-ratio: 2/3; background: #27272a; }
+    .poster-wrap { position: relative; width: 100%; aspect-ratio: 2/3; background: #222228; }
     .poster-wrap img { width: 100%; height: 100%; object-fit: cover; }
     .ep-tag { position: absolute; top: 6px; left: 6px; background: rgba(0,0,0,0.85); color: #fbbf24; font-size: 10px; font-weight: bold; padding: 2px 6px; border-radius: 4px; }
     
@@ -84,93 +88,296 @@
     .card-title { font-size: 13px; font-weight: bold; color: #fff; line-height: 1.3; margin-bottom: 4px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
     .card-meta { font-size: 11px; color: #a1a1aa; margin-top: auto; }
 
+    /* ==================================================== */
+    /* DEDICATED FULL MOVIE PAGE VIEW (ផ្ទាំងចាក់រឿងដាច់ដោយឡែក) */
+    /* ==================================================== */
+    #watchView {
+      display: none;
+      flex: 1;
+      width: 100%;
+      background: #0b0b0c;
+      flex-direction: column;
+    }
+    .watch-nav-bar {
+      background: #141418;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      position: sticky;
+      top: 0;
+      z-index: 90;
+    }
+    .btn-back {
+      background: #E50914;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 7px 16px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 8px rgba(229,9,20,0.4);
+    }
+    .watch-container {
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding-bottom: 40px;
+    }
+    .video-viewport {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #000;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.8);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .video-viewport iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+    .watch-details-box {
+      padding: 16px;
+    }
+    .watch-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .watch-movie-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.3;
+    }
+    .watch-movie-meta {
+      font-size: 12.5px;
+      color: #a1a1aa;
+      margin-top: 4px;
+    }
+
+    /* Playlist Episodes */
+    .episodes-panel {
+      margin-top: 16px;
+      padding: 14px;
+      background: #141418;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .episodes-panel-title {
+      font-size: 13.5px;
+      font-weight: bold;
+      color: #fbbf24;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .episodes-grid {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .ep-badge {
+      background: #202026;
+      border: 1px solid #33333d;
+      color: #f4f4f5;
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: 12.5px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .ep-badge.active, .ep-badge:hover {
+      background: #E50914;
+      border-color: #E50914;
+      font-weight: bold;
+      color: #fff;
+    }
+
+    /* Comments Section */
+    .comments-panel {
+      margin-top: 20px;
+      padding: 16px;
+      background: #141418;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+    .comments-header {
+      font-size: 14px;
+      font-weight: bold;
+      color: #fff;
+      margin-bottom: 14px;
+    }
+    .comment-input-box {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .comment-field {
+      flex: 1;
+      padding: 9px 12px;
+      border-radius: 8px;
+      background: #1f1f24;
+      border: 1px solid #33333a;
+      color: #fff;
+      font-size: 13px;
+      outline: none;
+    }
+    .comment-items-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .comment-card {
+      background: #1a1a20;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+    .comment-author-name {
+      font-size: 12px;
+      font-weight: bold;
+      color: #fbbf24;
+    }
+    .comment-text-body {
+      font-size: 13px;
+      color: #e4e4e7;
+      margin-top: 2px;
+      line-height: 1.4;
+    }
+    .comment-timestamp {
+      font-size: 10.5px;
+      color: #71717a;
+      margin-top: 4px;
+    }
+
+    /* Modals */
     .modal-box { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 300; padding: 16px; align-items: center; justify-content: center; }
     .modal-box.active { display: flex; }
-    .form-wrapper { width: 100%; max-width: 480px; background: #1c1c1f; border-radius: 12px; padding: 22px; border: 1px solid rgba(255,255,255,0.15); max-height: 90vh; overflow-y: auto; }
+    .form-wrapper { width: 100%; max-width: 480px; background: #16161a; border-radius: 12px; padding: 22px; border: 1px solid rgba(255,255,255,0.15); max-height: 90vh; overflow-y: auto; }
     .form-group { margin-bottom: 12px; display: flex; flex-direction: column; gap: 4px; }
     .form-group label { font-size: 12px; color: #a1a1aa; font-weight: bold; }
-    .form-control { width: 100%; padding: 9px 12px; border-radius: 6px; background: #27272a; border: 1px solid #3f3f46; color: #fff; font-size: 13px; outline: none; }
+    .form-control { width: 100%; padding: 9px 12px; border-radius: 6px; background: #222228; border: 1px solid #33333a; color: #fff; font-size: 13px; outline: none; }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
     .auth-tabs { display: flex; gap: 8px; margin-bottom: 16px; border-bottom: 1px solid #333; padding-bottom: 8px; }
     .auth-tab { flex: 1; text-align: center; padding: 8px; font-size: 13px; font-weight: 600; cursor: pointer; color: #a1a1aa; border-radius: 6px; }
-    .auth-tab.active { background: #27272a; color: #fff; }
+    .auth-tab.active { background: #222228; color: #fff; }
 
     .divider { display: flex; align-items: center; text-align: center; margin: 14px 0; color: #71717a; font-size: 12px; }
     .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid #333; }
     .divider::before { margin-right: .5em; }
     .divider::after { margin-left: .5em; }
 
-    /* Video Player Modal */
-    .player-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 200; padding: 16px; align-items: center; justify-content: center; }
-    .player-modal.active { display: flex; }
-    .player-box { width: 100%; max-width: 950px; background: #18181b; border-radius: 14px; overflow: hidden; border: 1px solid rgba(255,255,255,0.15); max-height: 92vh; display: flex; flex-direction: column; }
-    .video-frame { position: relative; width: 100%; aspect-ratio: 16/9; background: #000; flex-shrink: 0; }
-    .video-frame iframe { width: 100%; height: 100%; border: none; }
-
-    .player-content-scroll { padding: 18px 22px; overflow-y: auto; flex: 1; }
-    .player-header-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
-    
-    .episodes-area { margin-top: 14px; padding-top: 12px; border-top: 1px solid #27272a; }
-    .episodes-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
-    .ep-btn { background: #27272a; border: 1px solid #3f3f46; color: #fff; padding: 6px 14px; border-radius: 6px; font-size: 12.5px; cursor: pointer; transition: all 0.2s; }
-    .ep-btn.active, .ep-btn:hover { background: #E50914; border-color: #E50914; font-weight: bold; }
-
-    .comments-section { margin-top: 20px; padding-top: 18px; border-top: 1px solid #27272a; }
-    .comments-title { font-size: 14px; font-weight: bold; color: #fff; margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
-    .comment-form { display: flex; gap: 10px; margin-bottom: 16px; }
-    .comment-input { flex: 1; padding: 8px 12px; border-radius: 8px; background: #27272a; border: 1px solid #3f3f46; color: #fff; font-size: 13px; outline: none; }
-    .comment-list { display: flex; flex-direction: column; gap: 10px; }
-    .comment-item { background: #222226; padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); }
-    .comment-author { font-size: 12px; font-weight: bold; color: #fbbf24; margin-bottom: 2px; }
-    .comment-body { font-size: 13px; color: #e4e4e7; line-height: 1.4; }
-    .comment-time { font-size: 10.5px; color: #a1a1aa; margin-top: 4px; }
-
-    .ep-input-item { background: #222225; padding: 10px; border-radius: 8px; margin-bottom: 8px; border: 1px solid #3f3f46; }
+    .ep-input-item { background: #1f1f24; padding: 10px; border-radius: 8px; margin-bottom: 8px; border: 1px solid #33333a; }
     .loading-box { text-align: center; padding: 60px 20px; color: #a1a1aa; font-size: 14px; grid-column: 1/-1; }
   </style>
 </head>
 <body>
 
-  <div class="marquee-bar">
-    <div class="marquee-text">
-      📢 សូមស្វាគមន៍មកកាន់ SOKLIM STREAM • រីករាយទស្សនាភាពយន្តកម្រិត HD ច្បាស់ត្រជាក់ភ្នែក!
+  <!-- ==================== 1. HOME VIEW (ទំព័រដើម) ==================== -->
+  <div id="homePageWrapper">
+    <!-- Marquee -->
+    <div class="marquee-bar">
+      <div class="marquee-text">
+        📢 សូមស្វាគមន៍មកកាន់ SOKLIM STREAM • រីករាយទស្សនាភាពយន្តកម្រិត HD ច្បាស់ត្រជាក់ភ្នែក • ចាក់វីដេអូលើផ្ទាំងថ្មីស្រឡះ!
+      </div>
     </div>
+
+    <!-- Header -->
+    <header>
+      <div class="brand" onclick="location.reload()">SOKLIM</div>
+      <div class="search-box">
+        <input type="search" id="searchInput" name="film_search_box" autocomplete="off" placeholder="ស្វែងរកចំណងជើងរឿង..." oninput="searchMovies()">
+        <button onclick="searchMovies()">🔍</button>
+      </div>
+      <div class="header-btns">
+        <button id="addBtn" class="btn btn-red" style="display:none;" onclick="openAddModal()">+ បន្ថែមរឿង</button>
+        <button id="authBtn" class="btn btn-gray" onclick="openAuthModal()">ចូលគណនី</button>
+      </div>
+    </header>
+
+    <!-- Category Chips -->
+    <div class="chips-bar">
+      <div class="chip active" onclick="filterByChip('ទាំងអស់', this)">ទាំងអស់</div>
+      <div class="chip" onclick="filterByChip('ខ្មែរ', this)">ខ្មែរ</div>
+      <div class="chip" onclick="filterByChip('កូរ៉េ', this)">កូរ៉េ</div>
+      <div class="chip" onclick="filterByChip('ចិន', this)">ចិន</div>
+      <div class="chip" onclick="filterByChip('ហូលីវូដ', this)">ហូលីវូដ</div>
+      <div class="chip" onclick="filterByChip('សកម្មភាព', this)">សកម្មភាព</div>
+      <div class="chip" onclick="filterByChip('មនោសញ្ចេតនា', this)">មនោសញ្ចេតនា</div>
+      <div class="chip" onclick="filterByChip('ភ័យរន្ធត់', this)">ភ័យរន្ធត់</div>
+      <div class="chip" onclick="filterByChip('កំប្លែង', this)">កំប្លែង</div>
+    </div>
+
+    <!-- Movies Grid -->
+    <main id="homeView">
+      <div class="grid-header">
+        <div class="grid-title" id="pageTitle">ភាពយន្តទាំងអស់</div>
+        <div id="movieCount" style="font-size: 12.5px; color: #a1a1aa;">កំពុងទាញទិន្នន័យ...</div>
+      </div>
+      <div class="movies-grid" id="moviesGrid">
+        <div class="loading-box">🔄 កំពុងទាញយកបញ្ជីភាពយន្តពី Google Sheets...</div>
+      </div>
+    </main>
   </div>
 
-  <header>
-    <div class="brand" onclick="location.reload()">SOKLIM</div>
-    <div class="search-box">
-      <input type="search" id="searchInput" name="film_search_box" autocomplete="off" placeholder="ស្វែងរកចំណងជើងរឿង..." oninput="searchMovies()">
-      <button onclick="searchMovies()">🔍</button>
+  <!-- ==================== 2. WATCH VIEW (ផ្ទាំងទំព័រចាក់រឿងថ្មីដាច់ដោយឡែក) ==================== -->
+  <div id="watchView">
+    <!-- Watch Top Nav Bar -->
+    <div class="watch-nav-bar">
+      <button class="btn-back" onclick="exitToHome()">
+        <span>❮</span> ចាកចេញ (ថយក្រោយ)
+      </button>
+      <div style="display: flex; gap: 8px;">
+        <button id="inPlayerEditBtn" class="btn btn-gold" style="display: none;" onclick="editCurrentMovie()">✏️ កែប្រែរឿងនេះ</button>
+      </div>
     </div>
-    <div class="header-btns">
-      <button id="addBtn" class="btn btn-red" style="display:none;" onclick="openAddModal()">+ បន្ថែមរឿង</button>
-      <button id="authBtn" class="btn btn-gray" onclick="openAuthModal()">ចូលគណនី</button>
-    </div>
-  </header>
 
-  <div class="chips-bar">
-    <div class="chip active" onclick="filterByChip('ទាំងអស់', this)">ទាំងអស់</div>
-    <div class="chip" onclick="filterByChip('ខ្មែរ', this)">ខ្មែរ</div>
-    <div class="chip" onclick="filterByChip('កូរ៉េ', this)">កូរ៉េ</div>
-    <div class="chip" onclick="filterByChip('ចិន', this)">ចិន</div>
-    <div class="chip" onclick="filterByChip('ហូលីវូដ', this)">ហូលីវូដ</div>
-    <div class="chip" onclick="filterByChip('សកម្មភាព', this)">សកម្មភាព</div>
-    <div class="chip" onclick="filterByChip('មនោសញ្ចេតនា', this)">មនោសញ្ចេតនា</div>
-    <div class="chip" onclick="filterByChip('ភ័យរន្ធត់', this)">ភ័យរន្ធត់</div>
-    <div class="chip" onclick="filterByChip('កំប្លែង', this)">កំប្លែង</div>
+    <!-- Watch Video & Info Container -->
+    <div class="watch-container">
+      <!-- Full Video Player -->
+      <div class="video-viewport" id="playerFrame"></div>
+
+      <!-- Details Box -->
+      <div class="watch-details-box">
+        <div class="watch-title-row">
+          <div>
+            <h1 class="watch-movie-title" id="currentMovieTitle"></h1>
+            <p class="watch-movie-meta" id="currentMovieMeta"></p>
+          </div>
+        </div>
+
+        <!-- Episodes Playlist -->
+        <div id="episodesArea" class="episodes-panel" style="display: none;">
+          <div class="episodes-panel-title">📺 បញ្ជី Playlist ភាគវីដេអូ៖</div>
+          <div class="episodes-grid" id="episodesList"></div>
+        </div>
+
+        <!-- Comments -->
+        <div class="comments-panel">
+          <div class="comments-header">
+            💬 មតិយោបល់ (<span id="commentCount">0</span>)
+          </div>
+          <div class="comment-input-box">
+            <input type="text" id="commentInput" class="comment-field" placeholder="សរសេរមតិយោបល់របស់អ្នកអំពីភាពយន្តនេះ..." onkeydown="if(event.key==='Enter') submitComment()">
+            <button class="btn btn-red" onclick="submitComment()">ផ្ញើ</button>
+          </div>
+          <div class="comment-items-list" id="commentList"></div>
+        </div>
+      </div>
+    </div>
   </div>
-
-  <main>
-    <div class="grid-header">
-      <div class="grid-title" id="pageTitle">ភាពយន្តទាំងអស់</div>
-      <div id="movieCount" style="font-size: 12.5px; color: #a1a1aa;">កំពុងទាញទិន្នន័យ...</div>
-    </div>
-    <div class="movies-grid" id="moviesGrid">
-      <div class="loading-box">🔄 កំពុងទាញយកបញ្ជីភាពយន្តពី Google Sheets...</div>
-    </div>
-  </main>
 
   <!-- Login Modal -->
   <div class="modal-box" id="authModal">
@@ -268,42 +475,6 @@
       <div style="display: flex; gap: 8px; margin-top: 16px;">
         <button id="saveBtn" class="btn btn-red" style="flex: 1;" onclick="submitMovieForm()">រក្សាទុកចូល Sheet</button>
         <button class="btn btn-gray" onclick="closeFormModal()">បោះបង់</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Video Player Modal -->
-  <div class="player-modal" id="playerModal">
-    <div class="player-box">
-      <div class="video-frame" id="playerFrame"></div>
-      
-      <div class="player-content-scroll">
-        <div class="player-header-row">
-          <div>
-            <h2 id="currentMovieTitle" style="color: #fff; font-size: 18px; font-weight: 700;"></h2>
-            <p id="currentMovieMeta" style="color: #a1a1aa; font-size: 12.5px; margin-top: 4px;"></p>
-          </div>
-          <div style="display: flex; gap: 8px;">
-            <button id="inPlayerEditBtn" class="btn btn-gold" style="display: none;" onclick="editCurrentMovie()">✏️ កែប្រែរឿងនេះ</button>
-            <button class="btn btn-gray" onclick="closePlayer()">✕ បិទ</button>
-          </div>
-        </div>
-
-        <div id="episodesArea" class="episodes-area" style="display: none;">
-          <div style="font-size: 13px; font-weight: 600; color: #fbbf24;">📺 បញ្ជី Playlist ភាគវីដេអូ៖</div>
-          <div class="episodes-bar" id="episodesList"></div>
-        </div>
-
-        <div class="comments-section">
-          <div class="comments-title">
-            💬 មតិយោបល់ (<span id="commentCount">0</span>)
-          </div>
-          <div class="comment-form">
-            <input type="text" id="commentInput" class="comment-input" placeholder="សរសេរមតិយោបល់របស់អ្នក..." onkeydown="if(event.key==='Enter') submitComment()">
-            <button class="btn btn-red" onclick="submitComment()">ផ្ញើ</button>
-          </div>
-          <div class="comment-list" id="commentList"></div>
-        </div>
       </div>
     </div>
   </div>
@@ -550,7 +721,6 @@
     }
 
     function loadMoviesFromSheet() {
-      // ប្រើ Google Visualization JSON API ដើម្បីកុំឱ្យបែកបាក់ទិន្នន័យដោយសារសញ្ញាក្បៀសក្នុង CSV
       var url = 'https://docs.google.com/spreadsheets/d/' + GOOGLE_SHEET_ID + '/gviz/tq?tqx=out:json&sheet=Sheet1&t=' + Date.now();
 
       fetch(url)
@@ -559,7 +729,6 @@
           return res.text();
         })
         .then(function(text) {
-          // សម្អាតកន្ទុយ JSONP Wrapper របស់ Google
           var jsonStr = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
           var data = JSON.parse(jsonStr);
           allMovies = parseGvizData(data);
@@ -588,7 +757,6 @@
         var poster = c[4] && c[4].v ? String(c[4].v).trim() : '';
         var url = c[5] && c[5].v ? String(c[5].v).trim() : '';
 
-        // រំលងជួរទទេ ឬក្បាលជួរឈរ
         if (!title || title.toUpperCase() === 'NAME' || title.toUpperCase() === 'TITLE') continue;
 
         results.push({
@@ -616,7 +784,7 @@
         var posterSrc = formatPosterUrl(m.poster);
         var isSeries = (m.url.indexOf('[') === 0);
 
-        html += '<div class="movie-card" onclick="playMovie(' + i + ')">';
+        html += '<div class="movie-card" onclick="openDedicatedMoviePage(' + i + ')">';
         html += '<div class="poster-wrap">';
         html += '<img src="' + posterSrc + '" loading="lazy" onerror="this.src=\'https://via.placeholder.com/300x450?text=Poster\'">';
         html += '<div class="ep-tag">' + (isSeries ? 'រឿងភាគ' : 'HD') + '</div>';
@@ -629,7 +797,6 @@
       grid.innerHTML = html;
     }
 
-    // ចាប់យក File ID របស់ Google Drive ឱ្យចំ ១០០%
     function extractDriveId(url) {
       if (!url) return '';
       url = url.trim();
@@ -648,14 +815,24 @@
       return url;
     }
 
-    function playMovie(index) {
+    // =========================================================
+    // បើកទំព័រចាក់វីដេអូថ្មី (FULL DEDICATED PAGE VIEW)
+    // =========================================================
+    function openDedicatedMoviePage(index) {
       var movie = allMovies[index];
       if (!movie) return;
       activeMovie = movie;
 
-      document.getElementById('currentMovieTitle').innerText = movie.title;
-      document.getElementById('currentMovieMeta').innerText = (movie.country || 'ខ្មែរ') + ' • ' + (movie.genre || 'ទូទៅ') + ' • កម្រិត HD';
+      // 1. លាក់ផ្ទាំង Home ចោល ហើយបើកផ្ទាំង Watch
+      document.getElementById('homePageWrapper').style.display = 'none';
+      document.getElementById('watchView').style.display = 'flex';
+      window.scrollTo(0, 0);
 
+      // 2. ដាក់ព័ត៌មានរឿង
+      document.getElementById('currentMovieTitle').innerText = movie.title;
+      document.getElementById('currentMovieMeta').innerText = (movie.country || 'ខ្មែរ') + ' • ' + (movie.genre || 'ទូទៅ') + ' • កម្រិតច្បាស់ HD 1080p';
+
+      // 3. ពិនិត្យប៊ូតុង Edit សម្រាប់ Owner
       var inPlayerEditBtn = document.getElementById('inPlayerEditBtn');
       if (loggedInUser && loggedInUser.role === 'owner') {
         inPlayerEditBtn.style.display = 'inline-block';
@@ -663,17 +840,18 @@
         inPlayerEditBtn.style.display = 'none';
       }
 
+      // 4. ដោះស្រាយ Playlist ឬ Single Video
       var epArea = document.getElementById('episodesArea');
       var epList = document.getElementById('episodesList');
-
       var rawUrl = movie.url.trim();
+
       if (rawUrl.indexOf('[') === 0) {
         try {
           var eps = JSON.parse(rawUrl);
           if (eps && eps.length > 0) {
             epArea.style.display = 'block';
             epList.innerHTML = eps.map(function(ep, i) {
-              return '<button class="ep-btn ' + (i === 0 ? 'active' : '') + '" onclick="switchEpisode(' + i + ', this)">' + (ep.title || 'ភាគ ' + (i+1)) + '</button>';
+              return '<button class="ep-badge ' + (i === 0 ? 'active' : '') + '" onclick="switchEpisode(' + i + ', this)">' + (ep.title || 'ភាគ ' + (i+1)) + '</button>';
             }).join('');
             loadVideoFrame(eps[0].url);
           } else {
@@ -689,15 +867,23 @@
         loadVideoFrame(rawUrl);
       }
 
+      // 5. បង្ហាញខមិន
       loadMovieComments(movie.id || movie.title);
-      document.getElementById('playerModal').classList.add('active');
+    }
+
+    // ចុចប៊ូតុង «ចាកចេញ (ថយក្រោយ)» ត្រឡប់ទៅ Home វិញ
+    function exitToHome() {
+      document.getElementById('playerFrame').innerHTML = ''; // បញ្ឈប់វីដេអូ
+      document.getElementById('watchView').style.display = 'none';
+      document.getElementById('homePageWrapper').style.display = 'block';
+      activeMovie = null;
     }
 
     function switchEpisode(epIndex, btn) {
       try {
         var eps = JSON.parse(activeMovie.url);
         if (eps && eps[epIndex]) {
-          document.querySelectorAll('.ep-btn').forEach(function(b) { b.classList.remove('active'); });
+          document.querySelectorAll('.ep-badge').forEach(function(b) { b.classList.remove('active'); });
           btn.classList.add('active');
           loadVideoFrame(eps[epIndex].url);
         }
@@ -710,16 +896,9 @@
       frame.innerHTML = '<iframe src="' + streamUrl + '" allow="autoplay; fullscreen" allowfullscreen></iframe>';
     }
 
-    function closePlayer() {
-      document.getElementById('playerFrame').innerHTML = '';
-      document.getElementById('playerModal').classList.remove('active');
-      activeMovie = null;
-    }
-
     function editCurrentMovie() {
       if (!activeMovie) return;
       var m = activeMovie;
-      closePlayer();
 
       document.getElementById('editMovieId').value = m.id;
       document.getElementById('formModalTitle').innerText = 'កែប្រែរឿង៖ ' + m.title;
@@ -750,6 +929,7 @@
       document.getElementById('formModal').classList.add('active');
     }
 
+    // Comments System
     function loadMovieComments(movieId) {
       var storeKey = 'COMMENTS_' + movieId;
       var comments = JSON.parse(localStorage.getItem(storeKey) || '[]');
@@ -757,16 +937,16 @@
 
       var list = document.getElementById('commentList');
       if (comments.length === 0) {
-        list.innerHTML = '<div style="font-size:12px; color:#71717a; text-align:center; padding:10px;">មិនទាន់មានមតិយោបល់នៅឡើយទេ។ សូមក្លាយជាអ្នកដំបូងដែលបញ្ចេញមតិ!</div>';
+        list.innerHTML = '<div style="font-size:12px; color:#71717a; text-align:center; padding:12px;">មិនទាន់មានមតិយោបល់នៅឡើយទេ។ សូមក្លាយជាអ្នកដំបូងដែលបញ្ចេញមតិ!</div>';
         return;
       }
 
       list.innerHTML = comments.map(function(c) {
         return `
-          <div class="comment-item">
-            <div class="comment-author">👤 ${c.user}</div>
-            <div class="comment-body">${c.text}</div>
-            <div class="comment-time">${c.time}</div>
+          <div class="comment-card">
+            <div class="comment-author-name">👤 ${c.user}</div>
+            <div class="comment-text-body">${c.text}</div>
+            <div class="comment-timestamp">${c.time}</div>
           </div>
         `;
       }).join('');
