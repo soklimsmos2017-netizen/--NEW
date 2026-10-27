@@ -133,4 +133,701 @@
 <body>
 
   <div class="marquee-bar">
-    <div class
+    <div class="marquee-text">
+      📢 សូមស្វាគមន៍មកកាន់ SOKLIM STREAM • រីករាយទស្សនាភាពយន្តកម្រិត HD ច្បាស់ត្រជាក់ភ្នែក!
+    </div>
+  </div>
+
+  <header>
+    <div class="brand" onclick="location.reload()">SOKLIM</div>
+    <div class="search-box">
+      <input type="search" id="searchInput" name="film_search_box" autocomplete="off" placeholder="ស្វែងរកចំណងជើងរឿង..." oninput="searchMovies()">
+      <button onclick="searchMovies()">🔍</button>
+    </div>
+    <div class="header-btns">
+      <button id="addBtn" class="btn btn-red" style="display:none;" onclick="openAddModal()">+ បន្ថែមរឿង</button>
+      <button id="authBtn" class="btn btn-gray" onclick="openAuthModal()">ចូលគណនី</button>
+    </div>
+  </header>
+
+  <div class="chips-bar">
+    <div class="chip active" onclick="filterByChip('ទាំងអស់', this)">ទាំងអស់</div>
+    <div class="chip" onclick="filterByChip('ខ្មែរ', this)">ខ្មែរ</div>
+    <div class="chip" onclick="filterByChip('កូរ៉េ', this)">កូរ៉េ</div>
+    <div class="chip" onclick="filterByChip('ចិន', this)">ចិន</div>
+    <div class="chip" onclick="filterByChip('ហូលីវូដ', this)">ហូលីវូដ</div>
+    <div class="chip" onclick="filterByChip('សកម្មភាព', this)">សកម្មភាព</div>
+    <div class="chip" onclick="filterByChip('មនោសញ្ចេតនា', this)">មនោសញ្ចេតនា</div>
+    <div class="chip" onclick="filterByChip('ភ័យរន្ធត់', this)">ភ័យរន្ធត់</div>
+    <div class="chip" onclick="filterByChip('កំប្លែង', this)">កំប្លែង</div>
+  </div>
+
+  <main>
+    <div class="grid-header">
+      <div class="grid-title" id="pageTitle">ភាពយន្តទាំងអស់</div>
+      <div id="movieCount" style="font-size: 12.5px; color: #a1a1aa;">កំពុងទាញទិន្នន័យ...</div>
+    </div>
+    <div class="movies-grid" id="moviesGrid">
+      <div class="loading-box">🔄 កំពុងទាញយកបញ្ជីភាពយន្តពី Google Sheets...</div>
+    </div>
+  </main>
+
+  <!-- Login Modal -->
+  <div class="modal-box" id="authModal">
+    <div class="form-wrapper" style="max-width: 360px;">
+      <div class="auth-tabs">
+        <div id="tabLogin" class="auth-tab active" onclick="switchAuthTab('login')">ចូលគណនី</div>
+        <div id="tabRegister" class="auth-tab" onclick="switchAuthTab('register')">បង្កើតគណនីថ្មី</div>
+      </div>
+
+      <button class="btn-oauth btn-google" onclick="loginWithOAuth('Google')">
+        <svg width="16" height="16" viewBox="0 0 24 24" style="vertical-align:middle; margin-right:6px;"><path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.7 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.3 9 5 12 5z"/><path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.6-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5 3.7-8.8z"/><path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3s.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12 0 14.8s.7 5.1 1.9 7.5l3.7-2.9z"/><path fill="#34A853" d="M12 23.5c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.3-6.4-5.2L1.9 16.5C3.7 20.2 7.5 23.5 12 23.5z"/></svg>
+        ចូលតាម Google
+      </button>
+      <button class="btn-oauth btn-facebook" onclick="loginWithOAuth('Facebook')">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="white" style="vertical-align:middle; margin-right:6px;"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        ចូលតាម Facebook
+      </button>
+
+      <div class="divider">ឬប្រើប្រាស់គណនី</div>
+
+      <div class="form-group">
+        <label>ឈ្មោះគណនី</label>
+        <input type="text" id="authUsername" class="form-control" placeholder="វាយឈ្មោះគណនីរបស់អ្នក..." autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label>លេខសម្ងាត់</label>
+        <input type="password" id="authPassword" class="form-control" placeholder="••••••••" autocomplete="new-password">
+      </div>
+
+      <div style="display: flex; gap: 8px; margin-top: 16px;">
+        <button id="authSubmitBtn" class="btn btn-red" style="flex: 1;" onclick="handleAuthSubmit()">ចូលគណនី</button>
+        <button class="btn btn-gray" onclick="closeAuthModal()">បោះបង់</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add / Edit Modal -->
+  <div class="modal-box" id="formModal">
+    <div class="form-wrapper">
+      <h3 id="formModalTitle" style="margin-bottom: 12px;">បន្ថែមរឿងថ្មី</h3>
+      <input type="hidden" id="editMovieId" value="">
+
+      <div class="form-group">
+        <label>ចំណងជើងរឿង *</label>
+        <input type="text" id="mTitle" class="form-control" placeholder="វាយចំណងជើងរឿង...">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>ប្រទេស</label>
+          <select id="mCountry" class="form-control">
+            <option value="ខ្មែរ">ខ្មែរ</option>
+            <option value="កូរ៉េ">កូរ៉េ</option>
+            <option value="ចិន">ចិន</option>
+            <option value="ហូលីវូដ">ហូលីវូដ</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>ប្រភេទរឿង</label>
+          <select id="mGenre" class="form-control">
+            <option value="សកម្មភាព">សកម្មភាព</option>
+            <option value="មនោសញ្ចេតនា">មនោសញ្ចេតនា</option>
+            <option value="ភ័យរន្ធត់">ភ័យរន្ធត់</option>
+            <option value="កំប្លែង">កំប្លែង</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>រូបភាពក្រប (Poster URL)</label>
+        <input type="text" id="mPoster" class="form-control" placeholder="Link រូបភាពអនឡាញ...">
+        <div style="font-size: 11.5px; color: #a1a1aa; margin: 4px 0 2px;">ឬ ជ្រើសរើស File រូបភាពពីទូរស័ព្ទ/កុំព្យូទ័រ៖</div>
+        <input type="file" id="mPosterFile" accept="image/*" class="form-control" style="padding: 5px;" onchange="handlePosterFileUpload(event)">
+      </div>
+
+      <div class="form-group">
+        <label>ទម្រង់វីដេអូ</label>
+        <select id="mTypeSelect" class="form-control" onchange="toggleFormMovieType()">
+          <option value="single">រឿងទោល (១ វីដេអូចប់)</option>
+          <option value="series">រឿងភាគ (Playlist ច្រើនវីដេអូ)</option>
+        </select>
+      </div>
+
+      <div id="singleVideoBox" class="form-group">
+        <label>តំណភ្ជាប់ Google Drive វីដេអូ *</label>
+        <input type="text" id="mLink" class="form-control" placeholder="https://drive.google.com/file/d/.../view">
+      </div>
+
+      <div id="seriesVideoBox" style="display: none;" class="form-group">
+        <label>បញ្ជី Playlist វីដេអូ (Episodes)</label>
+        <div id="episodesFormList"></div>
+        <button type="button" class="btn btn-gray" style="width: 100%; margin-top: 6px;" onclick="addEpisodeFormRow('', '')">+ បន្ថែមភាគវីដេអូ</button>
+      </div>
+
+      <div style="display: flex; gap: 8px; margin-top: 16px;">
+        <button id="saveBtn" class="btn btn-red" style="flex: 1;" onclick="submitMovieForm()">រក្សាទុកចូល Sheet</button>
+        <button class="btn btn-gray" onclick="closeFormModal()">បោះបង់</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Video Player Modal -->
+  <div class="player-modal" id="playerModal">
+    <div class="player-box">
+      <div class="video-frame" id="playerFrame"></div>
+      
+      <div class="player-content-scroll">
+        <div class="player-header-row">
+          <div>
+            <h2 id="currentMovieTitle" style="color: #fff; font-size: 18px; font-weight: 700;"></h2>
+            <p id="currentMovieMeta" style="color: #a1a1aa; font-size: 12.5px; margin-top: 4px;"></p>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button id="inPlayerEditBtn" class="btn btn-gold" style="display: none;" onclick="editCurrentMovie()">✏️ កែប្រែរឿងនេះ</button>
+            <button class="btn btn-gray" onclick="closePlayer()">✕ បិទ</button>
+          </div>
+        </div>
+
+        <div id="episodesArea" class="episodes-area" style="display: none;">
+          <div style="font-size: 13px; font-weight: 600; color: #fbbf24;">📺 បញ្ជី Playlist ភាគវីដេអូ៖</div>
+          <div class="episodes-bar" id="episodesList"></div>
+        </div>
+
+        <div class="comments-section">
+          <div class="comments-title">
+            💬 មតិយោបល់ (<span id="commentCount">0</span>)
+          </div>
+          <div class="comment-form">
+            <input type="text" id="commentInput" class="comment-input" placeholder="សរសេរមតិយោបល់របស់អ្នក..." onkeydown="if(event.key==='Enter') submitComment()">
+            <button class="btn btn-red" onclick="submitComment()">ផ្ញើ</button>
+          </div>
+          <div class="comment-list" id="commentList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var GOOGLE_SHEET_ID = '1PKpl7XPsKV8PIuKKkf9EDhvPLWOhrRcuF_EOIqKkfbk';
+    var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzX1oF-vJJAerLDIzBjXaLlgE70g7YNPmSBzNwXHiBa4aDtf73mBbX9WIJs_hh97SYk/exec';
+
+    var allMovies = [];
+    var currentAuthMode = 'login';
+    var loggedInUser = null;
+    var activeMovie = null;
+
+    try {
+      loggedInUser = JSON.parse(localStorage.getItem('STREAM_USER'));
+    } catch(e) {
+      loggedInUser = null;
+    }
+
+    function refreshAuthUI() {
+      var authBtn = document.getElementById('authBtn');
+      var addBtn = document.getElementById('addBtn');
+      if (loggedInUser) {
+        if (loggedInUser.role === 'owner') {
+          authBtn.innerText = 'ចាកចេញ (' + loggedInUser.name + ')';
+          authBtn.className = 'btn btn-gold';
+          addBtn.style.display = 'inline-block';
+        } else {
+          authBtn.innerText = 'ចាកចេញ (' + loggedInUser.name + ')';
+          authBtn.className = 'btn btn-gray';
+          addBtn.style.display = 'none';
+        }
+      } else {
+        authBtn.innerText = 'ចូលគណនី';
+        authBtn.className = 'btn btn-gray';
+        addBtn.style.display = 'none';
+      }
+    }
+
+    function openAuthModal() {
+      if (loggedInUser) {
+        loggedInUser = null;
+        localStorage.removeItem('STREAM_USER');
+        refreshAuthUI();
+        alert('បានចាកចេញពីគណនី');
+      } else {
+        document.getElementById('authUsername').value = '';
+        document.getElementById('authPassword').value = '';
+        switchAuthTab('login');
+        document.getElementById('authModal').classList.add('active');
+      }
+    }
+
+    function closeAuthModal() {
+      document.getElementById('authModal').classList.remove('active');
+    }
+
+    function switchAuthTab(mode) {
+      currentAuthMode = mode;
+      document.getElementById('tabLogin').classList.toggle('active', mode === 'login');
+      document.getElementById('tabRegister').classList.toggle('active', mode === 'register');
+      document.getElementById('authSubmitBtn').innerText = (mode === 'login') ? 'ចូលគណនី' : 'ចុះឈ្មោះបង្កើត';
+    }
+
+    function loginWithOAuth(provider) {
+      var name = prompt('សូមបញ្ចូលឈ្មោះរបស់អ្នកដើម្បីចូលតាម ' + provider + '៖', 'User_' + Math.floor(Math.random()*1000));
+      if (name && name.trim()) {
+        loggedInUser = { name: name.trim(), role: 'viewer', provider: provider };
+        localStorage.setItem('STREAM_USER', JSON.stringify(loggedInUser));
+        refreshAuthUI();
+        closeAuthModal();
+        alert('ស្វាគមន៍ ' + name.trim() + ' ចូលទស្សនាដោយជោគជ័យ!');
+      }
+    }
+
+    function handleAuthSubmit() {
+      var u = document.getElementById('authUsername').value.trim();
+      var p = document.getElementById('authPassword').value.trim();
+
+      if (!u || !p) {
+        alert('សូមបញ្ចូលឈ្មោះគណនី និងលេខសម្ងាត់!');
+        return;
+      }
+
+      if (currentAuthMode === 'login') {
+        if (u === 'SOKLIM' && p === '12345678910') {
+          loggedInUser = { name: 'SOKLIM', role: 'owner' };
+          localStorage.setItem('STREAM_USER', JSON.stringify(loggedInUser));
+          refreshAuthUI();
+          closeAuthModal();
+          alert('ស្វាគមន៍ SOKLIM! លោកអ្នកអាចបន្ថែម និងកែប្រែរឿងបាន។');
+        } else {
+          var registered = JSON.parse(localStorage.getItem('SAVED_USERS') || '{}');
+          if (registered[u] && registered[u] === p) {
+            loggedInUser = { name: u, role: 'viewer' };
+            localStorage.setItem('STREAM_USER', JSON.stringify(loggedInUser));
+            refreshAuthUI();
+            closeAuthModal();
+            alert('ស្វាគមន៍ ' + u + ' ចូលទស្សនាដោយជោគជ័យ!');
+          } else {
+            alert('ឈ្មោះគណនី ឬលេខសម្ងាត់មិនត្រឹមត្រូវទេ!');
+          }
+        }
+      } else {
+        if (u === 'SOKLIM') {
+          alert('ឈ្មោះនេះមិនអាចចុះឈ្មោះបានទេ!');
+          return;
+        }
+        var users = JSON.parse(localStorage.getItem('SAVED_USERS') || '{}');
+        users[u] = p;
+        localStorage.setItem('SAVED_USERS', JSON.stringify(users));
+        loggedInUser = { name: u, role: 'viewer' };
+        localStorage.setItem('STREAM_USER', JSON.stringify(loggedInUser));
+        refreshAuthUI();
+        closeAuthModal();
+        alert('បានចុះឈ្មោះ និងចូលប្រើប្រាស់ជោគជ័យ!');
+      }
+    }
+
+    function openAddModal() {
+      document.getElementById('editMovieId').value = '';
+      document.getElementById('formModalTitle').innerText = 'បន្ថែមរឿងថ្មី';
+      document.getElementById('mTitle').value = '';
+      document.getElementById('mPoster').value = '';
+      document.getElementById('mPosterFile').value = '';
+      document.getElementById('mLink').value = '';
+      document.getElementById('mTypeSelect').value = 'single';
+      document.getElementById('episodesFormList').innerHTML = '';
+      toggleFormMovieType();
+      document.getElementById('formModal').classList.add('active');
+    }
+
+    function closeFormModal() {
+      document.getElementById('formModal').classList.remove('active');
+    }
+
+    function toggleFormMovieType() {
+      var isSeries = document.getElementById('mTypeSelect').value === 'series';
+      document.getElementById('singleVideoBox').style.display = isSeries ? 'none' : 'block';
+      document.getElementById('seriesVideoBox').style.display = isSeries ? 'block' : 'none';
+      if (isSeries && document.getElementById('episodesFormList').children.length === 0) {
+        addEpisodeFormRow('ភាគ ០១', '');
+      }
+    }
+
+    function addEpisodeFormRow(title, url) {
+      var c = document.getElementById('episodesFormList');
+      var num = c.children.length + 1;
+      var div = document.createElement('div');
+      div.className = 'ep-input-item';
+      div.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+          <input type="text" class="form-control ep-f-title" style="flex:1; margin-right:6px;" placeholder="ឈ្មោះភាគ..." value="${title || 'ភាគ ០' + num}">
+          <button type="button" class="btn btn-red" style="padding:4px 10px;" onclick="this.parentElement.parentElement.remove()">✕ លុប</button>
+        </div>
+        <input type="text" class="form-control ep-f-url" placeholder="Google Drive Link ភាគនេះ..." value="${url || ''}">
+      `;
+      c.appendChild(div);
+    }
+
+    function handlePosterFileUpload(event) {
+      var file = event.target.files[0];
+      if (file) {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('mPoster').value = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function submitMovieForm() {
+      var editId = document.getElementById('editMovieId').value.trim();
+      var title = document.getElementById('mTitle').value.trim();
+      var country = document.getElementById('mCountry').value;
+      var genre = document.getElementById('mGenre').value;
+      var poster = document.getElementById('mPoster').value.trim();
+      var type = document.getElementById('mTypeSelect').value;
+
+      var url = '';
+      if (type === 'single') {
+        url = document.getElementById('mLink').value.trim();
+        if (!title || !url) {
+          alert('សូមបញ្ចូលចំណងជើងរឿង និងតំណភ្ជាប់ Google Drive!');
+          return;
+        }
+      } else {
+        var epRows = document.querySelectorAll('.ep-input-item');
+        var eps = [];
+        epRows.forEach(function(row, idx) {
+          var t = row.querySelector('.ep-f-title').value.trim() || ('ភាគ ០' + (idx+1));
+          var u = row.querySelector('.ep-f-url').value.trim();
+          if (u) eps.push({ title: t, url: u });
+        });
+        if (!title || eps.length === 0) {
+          alert('សូមបញ្ចូលចំណងជើងរឿង និងភាគរឿងយ៉ាងហោចណាស់ ១ ភាគ!');
+          return;
+        }
+        url = JSON.stringify(eps);
+      }
+
+      var saveBtn = document.getElementById('saveBtn');
+      saveBtn.innerText = '⏳ កំពុងបញ្ជូនទៅ Sheet...';
+      saveBtn.disabled = true;
+
+      var payload = {
+        id: editId ? editId : ('id_' + Date.now()),
+        title: title,
+        country: country,
+        genre: genre,
+        poster: poster,
+        url: url
+      };
+
+      fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      })
+      .then(function() {
+        alert(editId ? '✅ បានកែប្រែរឿងដោយជោគជ័យ!' : '✅ បានបញ្ចូលរឿងថ្មីជោគជ័យ!');
+        saveBtn.innerText = 'រក្សាទុកចូល Sheet';
+        saveBtn.disabled = false;
+        closeFormModal();
+        setTimeout(loadMoviesFromSheet, 1500);
+      })
+      .catch(function(err) {
+        console.error(err);
+        alert('❌ មានបញ្ហាក្នុងការបញ្ជូនទិន្នន័យ');
+        saveBtn.innerText = 'រក្សាទុកចូល Sheet';
+        saveBtn.disabled = false;
+      });
+    }
+
+    function formatPosterUrl(url) {
+      if (!url) return 'https://via.placeholder.com/300x450?text=No+Poster';
+      if (url.indexOf('data:image') === 0) return url;
+      var clean = extractDriveId(url);
+      if (clean) {
+        return 'https://drive.google.com/thumbnail?id=' + clean + '&sz=w600';
+      }
+      return url;
+    }
+
+    function loadMoviesFromSheet() {
+      // ប្រើ Google Visualization JSON API ដើម្បីកុំឱ្យបែកបាក់ទិន្នន័យដោយសារសញ្ញាក្បៀសក្នុង CSV
+      var url = 'https://docs.google.com/spreadsheets/d/' + GOOGLE_SHEET_ID + '/gviz/tq?tqx=out:json&sheet=Sheet1&t=' + Date.now();
+
+      fetch(url)
+        .then(function(res) {
+          if (!res.ok) throw new Error('Network error');
+          return res.text();
+        })
+        .then(function(text) {
+          // សម្អាតកន្ទុយ JSONP Wrapper របស់ Google
+          var jsonStr = text.substring(text.indexOf('{'), text.lastIndexOf('}') + 1);
+          var data = JSON.parse(jsonStr);
+          allMovies = parseGvizData(data);
+          document.getElementById('movieCount').innerText = allMovies.length + ' រឿង';
+          renderMovies(allMovies);
+        })
+        .catch(function(err) {
+          console.error(err);
+          document.getElementById('moviesGrid').innerHTML = '<div class="loading-box" style="color:#ef4444;">❌ មិនអាចទាញទិន្នន័យបានទេ។ សូមប្រាកដថា Sheet បាន Share ជា Anyone with the link!</div>';
+        });
+    }
+
+    function parseGvizData(gviz) {
+      if (!gviz || !gviz.table || !gviz.table.rows) return [];
+      var rows = gviz.table.rows;
+      var results = [];
+
+      for (var i = 0; i < rows.length; i++) {
+        var c = rows[i].c;
+        if (!c || c.length === 0) continue;
+
+        var id = c[0] && c[0].v ? String(c[0].v).trim() : '';
+        var title = c[1] && c[1].v ? String(c[1].v).trim() : '';
+        var country = c[2] && c[2].v ? String(c[2].v).trim() : '';
+        var genre = c[3] && c[3].v ? String(c[3].v).trim() : '';
+        var poster = c[4] && c[4].v ? String(c[4].v).trim() : '';
+        var url = c[5] && c[5].v ? String(c[5].v).trim() : '';
+
+        // រំលងជួរទទេ ឬក្បាលជួរឈរ
+        if (!title || title.toUpperCase() === 'NAME' || title.toUpperCase() === 'TITLE') continue;
+
+        results.push({
+          id: id || ('id_' + i),
+          title: title,
+          country: country,
+          genre: genre,
+          poster: poster,
+          url: url
+        });
+      }
+      return results;
+    }
+
+    function renderMovies(list) {
+      var grid = document.getElementById('moviesGrid');
+      if (!list || list.length === 0) {
+        grid.innerHTML = '<div class="loading-box">មិនទាន់មានរឿងនៅឡើយទេ។ ចុច "+ បន្ថែមរឿង" ដើម្បីបញ្ចូល!</div>';
+        return;
+      }
+
+      var html = '';
+      for (var i = 0; i < list.length; i++) {
+        var m = list[i];
+        var posterSrc = formatPosterUrl(m.poster);
+        var isSeries = (m.url.indexOf('[') === 0);
+
+        html += '<div class="movie-card" onclick="playMovie(' + i + ')">';
+        html += '<div class="poster-wrap">';
+        html += '<img src="' + posterSrc + '" loading="lazy" onerror="this.src=\'https://via.placeholder.com/300x450?text=Poster\'">';
+        html += '<div class="ep-tag">' + (isSeries ? 'រឿងភាគ' : 'HD') + '</div>';
+        html += '</div>';
+        html += '<div class="card-info">';
+        html += '<div class="card-title">' + m.title + '</div>';
+        html += '<div class="card-meta">' + (m.country || '') + ' • ' + (m.genre || '') + '</div>';
+        html += '</div></div>';
+      }
+      grid.innerHTML = html;
+    }
+
+    // ចាប់យក File ID របស់ Google Drive ឱ្យចំ ១០០%
+    function extractDriveId(url) {
+      if (!url) return '';
+      url = url.trim();
+      var match = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) ||
+                  url.match(/\/d\/([a-zA-Z0-9_-]+)/) ||
+                  url.match(/id=([a-zA-Z0-9_-]+)/);
+      return match ? match[1] : '';
+    }
+
+    function convertDriveLink(url) {
+      if (!url) return '';
+      var fileId = extractDriveId(url);
+      if (fileId) {
+        return 'https://drive.google.com/file/d/' + fileId + '/preview';
+      }
+      return url;
+    }
+
+    function playMovie(index) {
+      var movie = allMovies[index];
+      if (!movie) return;
+      activeMovie = movie;
+
+      document.getElementById('currentMovieTitle').innerText = movie.title;
+      document.getElementById('currentMovieMeta').innerText = (movie.country || 'ខ្មែរ') + ' • ' + (movie.genre || 'ទូទៅ') + ' • កម្រិត HD';
+
+      var inPlayerEditBtn = document.getElementById('inPlayerEditBtn');
+      if (loggedInUser && loggedInUser.role === 'owner') {
+        inPlayerEditBtn.style.display = 'inline-block';
+      } else {
+        inPlayerEditBtn.style.display = 'none';
+      }
+
+      var epArea = document.getElementById('episodesArea');
+      var epList = document.getElementById('episodesList');
+
+      var rawUrl = movie.url.trim();
+      if (rawUrl.indexOf('[') === 0) {
+        try {
+          var eps = JSON.parse(rawUrl);
+          if (eps && eps.length > 0) {
+            epArea.style.display = 'block';
+            epList.innerHTML = eps.map(function(ep, i) {
+              return '<button class="ep-btn ' + (i === 0 ? 'active' : '') + '" onclick="switchEpisode(' + i + ', this)">' + (ep.title || 'ភាគ ' + (i+1)) + '</button>';
+            }).join('');
+            loadVideoFrame(eps[0].url);
+          } else {
+            epArea.style.display = 'none';
+            loadVideoFrame(rawUrl);
+          }
+        } catch(e) {
+          epArea.style.display = 'none';
+          loadVideoFrame(rawUrl);
+        }
+      } else {
+        epArea.style.display = 'none';
+        loadVideoFrame(rawUrl);
+      }
+
+      loadMovieComments(movie.id || movie.title);
+      document.getElementById('playerModal').classList.add('active');
+    }
+
+    function switchEpisode(epIndex, btn) {
+      try {
+        var eps = JSON.parse(activeMovie.url);
+        if (eps && eps[epIndex]) {
+          document.querySelectorAll('.ep-btn').forEach(function(b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+          loadVideoFrame(eps[epIndex].url);
+        }
+      } catch(e) {}
+    }
+
+    function loadVideoFrame(url) {
+      var frame = document.getElementById('playerFrame');
+      var streamUrl = convertDriveLink(url);
+      frame.innerHTML = '<iframe src="' + streamUrl + '" allow="autoplay; fullscreen" allowfullscreen></iframe>';
+    }
+
+    function closePlayer() {
+      document.getElementById('playerFrame').innerHTML = '';
+      document.getElementById('playerModal').classList.remove('active');
+      activeMovie = null;
+    }
+
+    function editCurrentMovie() {
+      if (!activeMovie) return;
+      var m = activeMovie;
+      closePlayer();
+
+      document.getElementById('editMovieId').value = m.id;
+      document.getElementById('formModalTitle').innerText = 'កែប្រែរឿង៖ ' + m.title;
+      document.getElementById('mTitle').value = m.title;
+      document.getElementById('mCountry').value = m.country || 'ខ្មែរ';
+      document.getElementById('mGenre').value = m.genre || 'សកម្មភាព';
+      document.getElementById('mPoster').value = (m.poster && m.poster.indexOf('data:image') === -1) ? m.poster : '';
+      document.getElementById('mPosterFile').value = '';
+
+      var isSeries = (m.url.indexOf('[') === 0);
+      document.getElementById('mTypeSelect').value = isSeries ? 'series' : 'single';
+      toggleFormMovieType();
+
+      var c = document.getElementById('episodesFormList');
+      c.innerHTML = '';
+
+      if (isSeries) {
+        try {
+          var eps = JSON.parse(m.url);
+          eps.forEach(function(ep) { addEpisodeFormRow(ep.title, ep.url); });
+        } catch(e) {
+          addEpisodeFormRow('ភាគ ០១', m.url);
+        }
+      } else {
+        document.getElementById('mLink').value = m.url;
+      }
+
+      document.getElementById('formModal').classList.add('active');
+    }
+
+    function loadMovieComments(movieId) {
+      var storeKey = 'COMMENTS_' + movieId;
+      var comments = JSON.parse(localStorage.getItem(storeKey) || '[]');
+      document.getElementById('commentCount').innerText = comments.length;
+
+      var list = document.getElementById('commentList');
+      if (comments.length === 0) {
+        list.innerHTML = '<div style="font-size:12px; color:#71717a; text-align:center; padding:10px;">មិនទាន់មានមតិយោបល់នៅឡើយទេ។ សូមក្លាយជាអ្នកដំបូងដែលបញ្ចេញមតិ!</div>';
+        return;
+      }
+
+      list.innerHTML = comments.map(function(c) {
+        return `
+          <div class="comment-item">
+            <div class="comment-author">👤 ${c.user}</div>
+            <div class="comment-body">${c.text}</div>
+            <div class="comment-time">${c.time}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function submitComment() {
+      if (!activeMovie) return;
+      var input = document.getElementById('commentInput');
+      var text = input.value.trim();
+      if (!text) return;
+
+      var userName = loggedInUser ? loggedInUser.name : 'អ្នកទស្សនាទូទៅ';
+      var storeKey = 'COMMENTS_' + (activeMovie.id || activeMovie.title);
+      var comments = JSON.parse(localStorage.getItem(storeKey) || '[]');
+
+      var newComment = {
+        user: userName,
+        text: text,
+        time: new Date().toLocaleTimeString('km-KH', { hour: '2-digit', minute: '2-digit' }) + ' • ថ្ងៃនេះ'
+      };
+
+      comments.unshift(newComment);
+      localStorage.setItem(storeKey, JSON.stringify(comments));
+
+      input.value = '';
+      loadMovieComments(activeMovie.id || activeMovie.title);
+    }
+
+    function filterByChip(name, el) {
+      var chips = document.querySelectorAll('.chip');
+      for (var i = 0; i < chips.length; i++) chips[i].classList.remove('active');
+      el.classList.add('active');
+
+      document.getElementById('pageTitle').innerText = (name === 'ទាំងអស់') ? 'ភាពយន្តទាំងអស់' : 'ភាពយន្ត៖ ' + name;
+
+      if (name === 'ទាំងអស់') {
+        renderMovies(allMovies);
+      } else {
+        var filtered = allMovies.filter(function(m) {
+          return (m.country && m.country.indexOf(name) !== -1) || (m.genre && m.genre.indexOf(name) !== -1);
+        });
+        renderMovies(filtered);
+      }
+    }
+
+    function searchMovies() {
+      var q = document.getElementById('searchInput').value.toLowerCase().trim();
+      if (!q) {
+        renderMovies(allMovies);
+        return;
+      }
+      var filtered = allMovies.filter(function(m) {
+        return (m.title && m.title.toLowerCase().indexOf(q) !== -1) ||
+               (m.country && m.country.toLowerCase().indexOf(q) !== -1) ||
+               (m.genre && m.genre.toLowerCase().indexOf(q) !== -1);
+      });
+      renderMovies(filtered);
+    }
+
+    refreshAuthUI();
+    loadMoviesFromSheet();
+  </script>
+</body>
+</html>
